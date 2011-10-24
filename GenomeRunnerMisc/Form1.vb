@@ -1,5 +1,6 @@
 ﻿Imports MySql.Data.MySqlClient
 Imports System.IO
+Imports alglib
 
 Public Class Form1
     Dim ConnectionString As String
@@ -134,4 +135,37 @@ Public Class Form1
         Next
         Return sb.ToString
     End Function
+
+
+    Private Sub btnRandFOIs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRandFOIs.Click
+        Dim BkgChr As List(Of String) = New List(Of String)(New String() {"chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY", "chrM"})
+        Dim BkgStart As List(Of Integer) = New List(Of Integer)(New Integer() {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+        Dim BkgEnd As List(Of Integer) = New List(Of Integer)(New Integer() {247249719, 242951149, 199501827, 191273063, 180857866, 170899992, 158821424, 146274826, 140273252, 135374737, 134452384, 132349534, 114142980, 106368585, 100338915, 88827254, 78774742, 76117153, 63811651, 62435964, 46944323, 49691432, 154913754, 57772954, 16571})
+        Dim TotalFiles As Integer = 100         'How many files to output
+        Dim MinFOIlength As Integer = 1000      'Minimum interval length
+        Dim MaxFOIlength As Integer = 15000     'Maximum interval length
+        Dim TotalFOI As Integer = 1000          'How many random features to generate
+        Dim TotalChr As Integer = BkgChr.Count  'Total number of chromosomes
+        Dim state As hqrndstate
+        Dim CurrBkgChr, CurrBkgStart, CurrBkgEnd As New List(Of Integer)    'Lists for holding random coordinates
+        Dim CurrLength, CurrBkgLength As Integer
+        For i = 0 To TotalFiles                                             'For each file to be generated
+            hqrndrandomize(state)
+            CurrBkgChr.Clear() : CurrBkgStart.Clear() : CurrBkgEnd.Clear()  'Clear lists
+            For j = 0 To TotalFOI                                                                   'Generate TotalFOIs
+                CurrBkgChr.Add(hqrnduniformi(state, TotalChr))                                      'By selecting random chromosome 
+                CurrLength = MinFOIlength + hqrnduniformi(state, MaxFOIlength - MinFOIlength + 1)   'then setting random length within predefined limits
+                CurrBkgLength = BkgEnd(CurrBkgChr.Last) - BkgStart(CurrBkgChr.Last) - CurrLength    'Take current chromosome length and subtract previously created random length, to create a buffer zone
+                CurrBkgStart.Add(hqrnduniformi(state, CurrBkgLength))                               'Get random start within this buffered length
+                CurrBkgEnd.Add(CurrBkgStart.Last + CurrLength)                                      'and end by adding previously created random length
+            Next
+            Using writer As StreamWriter = New StreamWriter("F:\RandFOI" & i & ".bed")              'Now write it all in the file
+                For j = 0 To TotalFOI
+                    writer.WriteLine(BkgChr(CurrBkgChr(j)) & vbTab & CurrBkgStart(j) & vbTab & CurrBkgEnd(j))
+                Next
+            End Using
+            Debug.Print("File " & i & " created")
+        Next
+        MsgBox("Files created")
+    End Sub
 End Class

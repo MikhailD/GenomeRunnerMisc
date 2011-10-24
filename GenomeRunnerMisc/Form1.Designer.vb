@@ -24,14 +24,14 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.btnExtractAllGFs = New System.Windows.Forms.Button()
         Me.btnConnect = New System.Windows.Forms.Button()
-        Me.Button3 = New System.Windows.Forms.Button()
+        Me.btnRandFOIs = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnExtractAllGFs
         '
         Me.btnExtractAllGFs.Location = New System.Drawing.Point(12, 45)
         Me.btnExtractAllGFs.Name = "btnExtractAllGFs"
-        Me.btnExtractAllGFs.Size = New System.Drawing.Size(145, 55)
+        Me.btnExtractAllGFs.Size = New System.Drawing.Size(96, 23)
         Me.btnExtractAllGFs.TabIndex = 0
         Me.btnExtractAllGFs.Text = "Extract All GFs"
         Me.btnExtractAllGFs.UseVisualStyleBackColor = True
@@ -40,26 +40,26 @@ Partial Class Form1
         '
         Me.btnConnect.Location = New System.Drawing.Point(12, 12)
         Me.btnConnect.Name = "btnConnect"
-        Me.btnConnect.Size = New System.Drawing.Size(75, 23)
+        Me.btnConnect.Size = New System.Drawing.Size(96, 23)
         Me.btnConnect.TabIndex = 1
         Me.btnConnect.Text = "Connect"
         Me.btnConnect.UseVisualStyleBackColor = True
         '
-        'Button3
+        'btnRandFOIs
         '
-        Me.Button3.Location = New System.Drawing.Point(22, 191)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(75, 23)
-        Me.Button3.TabIndex = 2
-        Me.Button3.Text = "Button3"
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.btnRandFOIs.Location = New System.Drawing.Point(12, 76)
+        Me.btnRandFOIs.Name = "btnRandFOIs"
+        Me.btnRandFOIs.Size = New System.Drawing.Size(96, 23)
+        Me.btnRandFOIs.TabIndex = 2
+        Me.btnRandFOIs.Text = "Create rand FOIs"
+        Me.btnRandFOIs.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(497, 262)
-        Me.Controls.Add(Me.Button3)
+        Me.Controls.Add(Me.btnRandFOIs)
         Me.Controls.Add(Me.btnConnect)
         Me.Controls.Add(Me.btnExtractAllGFs)
         Me.Name = "Form1"
@@ -69,6 +69,6 @@ Partial Class Form1
     End Sub
     Friend WithEvents btnExtractAllGFs As System.Windows.Forms.Button
     Friend WithEvents btnConnect As System.Windows.Forms.Button
-    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents btnRandFOIs As System.Windows.Forms.Button
 
 End Class
