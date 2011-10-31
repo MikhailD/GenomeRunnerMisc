@@ -12,6 +12,7 @@ Public Class Form1
         Public FeatureName As String
         Public Tier As Integer
     End Class
+
     Private Function GetConnectionSettings(ByRef uName As String, ByRef uPassword As String, ByRef uServer As String, ByRef uDatabase As String) As String
         'gets the connection string values from the registry if they exist
         Dim connectionString As String
@@ -126,7 +127,7 @@ Public Class Form1
 
     Function TrimStr(ByRef StringToTrim As String) As String
         'http://www.vbdotnetforums.com/vb-net-general-discussion/31506-how-remove-all-special-characters-string-visual-basic-net.html
-        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\:.-".ToCharArray() '"!@#$%^&*(){}[]""_+<>?/".ToCharArray() 
+        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\:.,-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/".ToCharArray() 
         Dim sb As New System.Text.StringBuilder
         For Each ch As Char In StringToTrim
             If Array.IndexOf(illegalChars, ch) = -1 Then
@@ -135,7 +136,6 @@ Public Class Form1
         Next
         Return sb.ToString
     End Function
-
 
     Private Sub btnRandFOIs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRandFOIs.Click
         Dim BkgChr As List(Of String) = New List(Of String)(New String() {"chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY", "chrM"})
@@ -168,4 +168,25 @@ Public Class Form1
         Next
         MsgBox("Files created")
     End Sub
+
+    Private Sub btnConvert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConvert.Click
+        OpenDatabase()
+        Dim strTxt As String = TextBox1.Text
+        Dim strSplit As String() = strTxt.Split(New Char() {vbCrLf}) 'Create array from the textbox
+        For i = 0 To strSplit.Count - 1
+            strSplit(i) = TrimStr(strSplit(i))
+            If strSplit(i) <> vbNullString Then
+                cmd = New MySqlCommand("SELECT geneSymbol FROM kgxref WHERE refseq='" & strSplit(i) & "';", cn)
+                dr = cmd.ExecuteReader
+                If dr.HasRows Then
+                    dr.Read()
+                    strSplit(i) &= vbTab & dr(0)
+                End If
+                dr.Close() : cmd.Dispose()
+            End If
+        Next
+        TextBox1.Text = String.Join(vbCrLf, strSplit)
+    End Sub
+
+
 End Class
