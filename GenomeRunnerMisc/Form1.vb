@@ -138,9 +138,14 @@ Public Class Form1
     End Function
 
     Private Sub btnRandFOIs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRandFOIs.Click
-        Dim BkgChr As List(Of String) = New List(Of String)(New String() {"chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY", "chrM"})
-        Dim BkgStart As List(Of Integer) = New List(Of Integer)(New Integer() {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
-        Dim BkgEnd As List(Of Integer) = New List(Of Integer)(New Integer() {247249719, 242951149, 199501827, 191273063, 180857866, 170899992, 158821424, 146274826, 140273252, 135374737, 134452384, 132349534, 114142980, 106368585, 100338915, 88827254, 78774742, 76117153, 63811651, 62435964, 46944323, 49691432, 154913754, 57772954, 16571})
+        'HG18 main chromosomes
+        'Dim BkgChr As List(Of String) = New List(Of String)(New String() {"chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY", "chrM"})
+        'Dim BkgStart As List(Of Integer) = New List(Of Integer)(New Integer() {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+        'Dim BkgEnd As List(Of Integer) = New List(Of Integer)(New Integer() {247249719, 242951149, 199501827, 191273063, 180857866, 170899992, 158821424, 146274826, 140273252, 135374737, 134452384, 132349534, 114142980, 106368585, 100338915, 88827254, 78774742, 76117153, 63811651, 62435964, 46944323, 49691432, 154913754, 57772954, 16571})
+        'HG18 all chromosomes
+        Dim BkgChr As List(Of String) = New List(Of String)(New String() {"chr1", "chr1_random", "chr2", "chr2_random", "chr3", "chr3_random", "chr4", "chr4_random", "chr5", "chr5_h2_hap1", "chr5_random", "chr6", "chr6_cox_hap1", "chr6_qbl_hap2", "chr6_random", "chr7", "chr7_random", "chr8", "chr8_random", "chr9", "chr9_random", "chr10", "chr10_random", "chr11", "chr11_random", "chr12", "chr13", "chr13_random", "chr14", "chr15", "chr15_random", "chr16", "chr16_random", "chr17", "chr17_random", "chr18", "chr18_random", "chr19", "chr19_random", "chr20", "chr21", "chr21_random", "chr22", "chr22_h2_hap1", "chr22_random", "chrX", "chrX_random", "chrY", "chrM"})
+        Dim BkgStart As List(Of Integer) = New List(Of Integer)(New Integer() {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+        Dim BkgEnd As List(Of Integer) = New List(Of Integer)(New Integer() {247249719, 1663265, 242951149, 185571, 199501827, 749256, 191273063, 842648, 180857866, 1794870, 143687, 170899992, 4731698, 4565931, 1875562, 158821424, 549659, 146274826, 943810, 140273252, 1146434, 135374737, 113275, 134452384, 215294, 132349534, 114142980, 186858, 106368585, 100338915, 784346, 88827254, 105485, 78774742, 2617613, 76117153, 4262, 63811651, 301858, 62435964, 46944323, 1679693, 49691432, 63661, 257318, 154913754, 1719168, 57772954, 16571})
         Dim TotalFiles As Integer = 100         'How many files to output
         Dim MinFOIlength As Integer = 1000      'Minimum interval length
         Dim MaxFOIlength As Integer = 15000     'Maximum interval length
@@ -153,13 +158,14 @@ Public Class Form1
             hqrndrandomize(state)
             CurrBkgChr.Clear() : CurrBkgStart.Clear() : CurrBkgEnd.Clear()  'Clear lists
             For j = 0 To TotalFOI                                                                   'Generate TotalFOIs
-                CurrBkgChr.Add(hqrnduniformi(state, TotalChr))                                      'By selecting random chromosome 
+                'CurrBkgChr.Add(hqrnduniformi(state, TotalChr))                                      'By selecting random chromosome 
+                CurrBkgChr.Add(getWeightedRandomChromosome(state, BkgEnd))
                 CurrLength = MinFOIlength + hqrnduniformi(state, MaxFOIlength - MinFOIlength + 1)   'then setting random length within predefined limits
                 CurrBkgLength = BkgEnd(CurrBkgChr.Last) - BkgStart(CurrBkgChr.Last) - CurrLength    'Take current chromosome length and subtract previously created random length, to create a buffer zone
                 CurrBkgStart.Add(hqrnduniformi(state, CurrBkgLength))                               'Get random start within this buffered length
                 CurrBkgEnd.Add(CurrBkgStart.Last + CurrLength)                                      'and end by adding previously created random length
             Next
-            Using writer As StreamWriter = New StreamWriter("F:\RandFOI" & i & ".bed")              'Now write it all in the file
+            Using writer As StreamWriter = New StreamWriter("F:\RandFOIweighted" & i & ".bed")              'Now write it all in the file
                 For j = 0 To TotalFOI
                     writer.WriteLine(BkgChr(CurrBkgChr(j)) & vbTab & CurrBkgStart(j) & vbTab & CurrBkgEnd(j))
                 Next
@@ -168,6 +174,46 @@ Public Class Form1
         Next
         MsgBox("Files created")
     End Sub
+
+    Private Function getWeightedRandomChromosome(ByRef state As hqrndstate, ByVal bkgEnd As List(Of Integer))
+        'This function essentially goes from this:
+        '|------chr1-----|---chr2---|--chr3--| etc.
+        '0             1000       1500     1750
+        '
+        'To this:
+        '|------chr1-----|---chr2---|--chr3--| etc.
+        '0              .57        .86      1.0
+        'Since total summing up chromosome length gets bigger than VB data types can handle,
+        'these are handled as percentages instead.
+
+        'Find combined length of all chromosomes from background.
+        Dim combinedChromLength As ULong = 0
+        For Each elem In bkgEnd
+            combinedChromLength += elem
+        Next
+
+        'For calculation purposes, chrom will be assigned values between 0.0 & 1.0 based on their percentage of total length.
+        Dim weightedChromPositions As New List(Of Double)
+        weightedChromPositions.Add(bkgEnd(0) / combinedChromLength)
+        For i As Integer = 1 To bkgEnd.Count - 1
+            weightedChromPositions.Add((bkgEnd(i) / combinedChromLength) + weightedChromPositions(i - 1))
+        Next
+
+        'Randomly select number between 0 & 1.0; find which chrom this number would be part of.
+        'Dim RandomClass As Random = New Random
+        'Dim randomIndex As Double = RandomClass.NextDouble()
+        Dim randomIndex As Double = hqrnduniformr(state)
+        Dim randChrom As Integer = -1
+        Dim counter As Integer = 0
+        While randChrom = -1
+            If randomIndex <= weightedChromPositions(counter) Then
+                randChrom = counter
+            End If
+            counter = counter + 1
+        End While
+        Return randChrom
+    End Function
+
 
     Private Sub btnConvert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConvert.Click
         OpenDatabase()
