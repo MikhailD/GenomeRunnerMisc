@@ -235,4 +235,13 @@ Public Class Form1
     End Sub
 
 
+    Private Sub btnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
+        TextBox1.Text = vbNullString
+    End Sub
+
+    Private Sub btnCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy.Click
+        TextBox1.SelectionStart = 0
+        TextBox1.SelectionLength = TextBox1.Text.Length
+        TextBox1.Copy()
+    End Sub
 End Class

@@ -28,6 +28,8 @@ Partial Class Form1
         Me.btnConvert = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.btnClear = New System.Windows.Forms.Button()
+        Me.btnCopy = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnExtractAllGFs
@@ -88,11 +90,31 @@ Partial Class Form1
         Me.Label1.TabIndex = 5
         Me.Label1.Text = "RefSeq ID to name converter"
         '
+        'btnClear
+        '
+        Me.btnClear.Location = New System.Drawing.Point(3, 278)
+        Me.btnClear.Name = "btnClear"
+        Me.btnClear.Size = New System.Drawing.Size(75, 23)
+        Me.btnClear.TabIndex = 6
+        Me.btnClear.Text = "Clear"
+        Me.btnClear.UseVisualStyleBackColor = True
+        '
+        'btnCopy
+        '
+        Me.btnCopy.Location = New System.Drawing.Point(3, 249)
+        Me.btnCopy.Name = "btnCopy"
+        Me.btnCopy.Size = New System.Drawing.Size(75, 23)
+        Me.btnCopy.TabIndex = 7
+        Me.btnCopy.Text = "Copy"
+        Me.btnCopy.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(497, 262)
+        Me.ClientSize = New System.Drawing.Size(497, 307)
+        Me.Controls.Add(Me.btnCopy)
+        Me.Controls.Add(Me.btnClear)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btnConvert)
         Me.Controls.Add(Me.TextBox1)
@@ -111,5 +133,7 @@ Partial Class Form1
     Friend WithEvents btnConvert As System.Windows.Forms.Button
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents btnClear As System.Windows.Forms.Button
+    Friend WithEvents btnCopy As System.Windows.Forms.Button
 
 End Class
