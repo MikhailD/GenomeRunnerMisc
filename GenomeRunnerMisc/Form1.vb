@@ -219,16 +219,23 @@ Public Class Form1
         OpenDatabase()
         Dim strTxt As String = TextBox1.Text
         Dim strSplit As String() = strTxt.Split(New Char() {vbCrLf}) 'Create array from the textbox
+        Dim strSubSplit As String() 'Array to store pipe separated entries
         For i = 0 To strSplit.Count - 1
             strSplit(i) = TrimStr(strSplit(i))
             If strSplit(i) <> vbNullString Then
-                cmd = New MySqlCommand("SELECT geneSymbol FROM kgxref WHERE refseq='" & strSplit(i) & "';", cn)
-                dr = cmd.ExecuteReader
-                If dr.HasRows Then
-                    dr.Read()
-                    strSplit(i) &= vbTab & dr(0)
-                End If
-                dr.Close() : cmd.Dispose()
+                strSubSplit = strSplit(i).Split("|")    'Check if there's something pipe-separated
+                strSplit(i) &= vbTab                    'Add a tab, to separate converted names
+                For j = 0 To strSubSplit.Count - 1      'Run through each member of pipe-separated string
+                    cmd = New MySqlCommand("SELECT geneSymbol FROM kgxref WHERE refseq='" & strSubSplit(j) & "';", cn)
+                    dr = cmd.ExecuteReader
+                    If dr.HasRows Then
+                        dr.Read() : strSplit(i) &= dr(0) & "|"  'Add converted name and a pipe
+                    Else
+                        strSplit(i) &= "***" & "|"              'Or, if nothing converted, dummy and a pipe
+                    End If
+                    dr.Close() : cmd.Dispose()
+                Next
+                strSplit(i) = strSplit(i).Substring(0, strSplit(i).Length - 1) 'Remove last pipe
             End If
         Next
         TextBox1.Text = String.Join(vbCrLf, strSplit)
