@@ -127,7 +127,7 @@ Public Class Form1
 
     Function TrimStr(ByRef StringToTrim As String) As String
         'http://www.vbdotnetforums.com/vb-net-general-discussion/31506-how-remove-all-special-characters-string-visual-basic-net.html
-        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\:.,-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/".ToCharArray() 
+        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\:.-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/".ToCharArray() 
         Dim sb As New System.Text.StringBuilder
         For Each ch As Char In StringToTrim
             If Array.IndexOf(illegalChars, ch) = -1 Then
@@ -218,20 +218,32 @@ Public Class Form1
     Private Sub btnConvert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConvert.Click
         OpenDatabase()
         Dim strTxt As String = TextBox1.Text
-        Dim strSplit As String() = strTxt.Split(New Char() {vbCrLf}) 'Create array from the textbox
+        Dim strSplit As String()
+        If InStr(TextBox1.Text, vbCrLf) Then
+            strSplit = strTxt.Split(vbCrLf) 'Create array from the textbox
+        Else
+            strSplit = strTxt.Split(vbLf) 'Create array from the textbox
+        End If
         Dim strSubSplit As String() 'Array to store pipe separated entries
+        Dim strSeparator As String = "|"  'Separator for multiple IDs on one line
+        If rbtnPipe.Checked Then strSeparator = "|"
+        If rbtnComma.Checked Then strSeparator = ","
+
         For i = 0 To strSplit.Count - 1
-            strSplit(i) = TrimStr(strSplit(i))
+            strSplit(i) = TrimStr(strSplit(i)) 'Remove special characters, not commas and pipes
             If strSplit(i) <> vbNullString Then
-                strSubSplit = strSplit(i).Split("|")    'Check if there's something pipe-separated
+                'If the last symbol is a separator, remove it
+                If strSplit(i).Substring(strSplit(i).Length - 1) = strSeparator Then strSplit(i) = strSplit(i).Substring(0, strSplit(i).Length - 1)
+                strSubSplit = strSplit(i).Split(strSeparator)    'Check if there's something pipe-separated
                 strSplit(i) &= vbTab                    'Add a tab, to separate converted names
                 For j = 0 To strSubSplit.Count - 1      'Run through each member of pipe-separated string
                     cmd = New MySqlCommand("SELECT geneSymbol FROM kgxref WHERE refseq='" & strSubSplit(j) & "';", cn)
                     dr = cmd.ExecuteReader
                     If dr.HasRows Then
-                        dr.Read() : strSplit(i) &= dr(0) & "|"  'Add converted name and a pipe
+                        dr.Read() : strSplit(i) &= dr(0) & strSeparator  'Add converted name and a pipe
                     Else
-                        strSplit(i) &= "***" & "|"              'Or, if nothing converted, dummy and a pipe
+                        If rbtn3stars.Checked Then strSplit(i) &= "***" & strSeparator 'Or, if nothing converted, dummy and a pipe
+                        If rbtnSourceID.Checked Then strSplit(i) &= strSubSplit(j) & strSeparator 'Or, if nothing converted, source and a pipe
                     End If
                     dr.Close() : cmd.Dispose()
                 Next
@@ -251,4 +263,6 @@ Public Class Form1
         TextBox1.SelectionLength = TextBox1.Text.Length
         TextBox1.Copy()
     End Sub
+
+
 End Class
