@@ -36,13 +36,27 @@ Partial Class Form1
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.rbtnSourceID = New System.Windows.Forms.RadioButton()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.lblHost = New System.Windows.Forms.Label()
+        Me.lblUser = New System.Windows.Forms.Label()
+        Me.lblDB = New System.Windows.Forms.Label()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.listFiles = New System.Windows.Forms.ListView()
+        Me.btnClustering = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnExtractAllGFs
         '
-        Me.btnExtractAllGFs.Location = New System.Drawing.Point(389, 45)
+        Me.btnExtractAllGFs.Location = New System.Drawing.Point(6, 116)
         Me.btnExtractAllGFs.Name = "btnExtractAllGFs"
         Me.btnExtractAllGFs.Size = New System.Drawing.Size(96, 23)
         Me.btnExtractAllGFs.TabIndex = 0
@@ -51,7 +65,7 @@ Partial Class Form1
         '
         'btnConnect
         '
-        Me.btnConnect.Location = New System.Drawing.Point(389, 12)
+        Me.btnConnect.Location = New System.Drawing.Point(6, 87)
         Me.btnConnect.Name = "btnConnect"
         Me.btnConnect.Size = New System.Drawing.Size(96, 23)
         Me.btnConnect.TabIndex = 1
@@ -60,7 +74,7 @@ Partial Class Form1
         '
         'btnRandFOIs
         '
-        Me.btnRandFOIs.Location = New System.Drawing.Point(389, 76)
+        Me.btnRandFOIs.Location = New System.Drawing.Point(6, 145)
         Me.btnRandFOIs.Name = "btnRandFOIs"
         Me.btnRandFOIs.Size = New System.Drawing.Size(96, 23)
         Me.btnRandFOIs.TabIndex = 2
@@ -69,7 +83,7 @@ Partial Class Form1
         '
         'btnConvert
         '
-        Me.btnConvert.Location = New System.Drawing.Point(3, 220)
+        Me.btnConvert.Location = New System.Drawing.Point(197, 208)
         Me.btnConvert.Name = "btnConvert"
         Me.btnConvert.Size = New System.Drawing.Size(75, 23)
         Me.btnConvert.TabIndex = 4
@@ -81,18 +95,18 @@ Partial Class Form1
         Me.TextBox1.AcceptsReturn = True
         Me.TextBox1.AcceptsTab = True
         Me.TextBox1.AllowDrop = True
-        Me.TextBox1.Location = New System.Drawing.Point(3, 16)
+        Me.TextBox1.Location = New System.Drawing.Point(6, 37)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.TextBox1.Size = New System.Drawing.Size(143, 198)
+        Me.TextBox1.Size = New System.Drawing.Size(143, 279)
         Me.TextBox1.TabIndex = 3
         Me.TextBox1.WordWrap = False
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(0, 0)
+        Me.Label1.Location = New System.Drawing.Point(3, 21)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(146, 13)
         Me.Label1.TabIndex = 5
@@ -100,7 +114,7 @@ Partial Class Form1
         '
         'btnClear
         '
-        Me.btnClear.Location = New System.Drawing.Point(3, 278)
+        Me.btnClear.Location = New System.Drawing.Point(197, 266)
         Me.btnClear.Name = "btnClear"
         Me.btnClear.Size = New System.Drawing.Size(75, 23)
         Me.btnClear.TabIndex = 6
@@ -109,7 +123,7 @@ Partial Class Form1
         '
         'btnCopy
         '
-        Me.btnCopy.Location = New System.Drawing.Point(3, 249)
+        Me.btnCopy.Location = New System.Drawing.Point(197, 237)
         Me.btnCopy.Name = "btnCopy"
         Me.btnCopy.Size = New System.Drawing.Size(75, 23)
         Me.btnCopy.TabIndex = 7
@@ -155,7 +169,7 @@ Partial Class Form1
         '
         Me.GroupBox1.Controls.Add(Me.rbtnComma)
         Me.GroupBox1.Controls.Add(Me.rbtnPipe)
-        Me.GroupBox1.Location = New System.Drawing.Point(160, 12)
+        Me.GroupBox1.Location = New System.Drawing.Point(163, 33)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(160, 66)
         Me.GroupBox1.TabIndex = 13
@@ -166,7 +180,7 @@ Partial Class Form1
         '
         Me.GroupBox2.Controls.Add(Me.rbtnSourceID)
         Me.GroupBox2.Controls.Add(Me.rbtn3stars)
-        Me.GroupBox2.Location = New System.Drawing.Point(160, 96)
+        Me.GroupBox2.Location = New System.Drawing.Point(163, 117)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(160, 63)
         Me.GroupBox2.TabIndex = 14
@@ -183,29 +197,136 @@ Partial Class Form1
         Me.rbtnSourceID.Text = "Source ID"
         Me.rbtnSourceID.UseVisualStyleBackColor = True
         '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.TextBox1)
+        Me.GroupBox3.Controls.Add(Me.btnConvert)
+        Me.GroupBox3.Controls.Add(Me.GroupBox2)
+        Me.GroupBox3.Controls.Add(Me.Label1)
+        Me.GroupBox3.Controls.Add(Me.GroupBox1)
+        Me.GroupBox3.Controls.Add(Me.btnClear)
+        Me.GroupBox3.Controls.Add(Me.btnCopy)
+        Me.GroupBox3.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(334, 325)
+        Me.GroupBox3.TabIndex = 16
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Conversion"
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.GroupBox5)
+        Me.GroupBox4.Controls.Add(Me.btnConnect)
+        Me.GroupBox4.Controls.Add(Me.btnExtractAllGFs)
+        Me.GroupBox4.Controls.Add(Me.btnRandFOIs)
+        Me.GroupBox4.Location = New System.Drawing.Point(12, 343)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(334, 208)
+        Me.GroupBox4.TabIndex = 17
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Misc"
+        '
+        'GroupBox5
+        '
+        Me.GroupBox5.Controls.Add(Me.lblHost)
+        Me.GroupBox5.Controls.Add(Me.lblUser)
+        Me.GroupBox5.Controls.Add(Me.lblDB)
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 19)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(156, 62)
+        Me.GroupBox5.TabIndex = 21
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Current Connection Settings"
+        '
+        'lblHost
+        '
+        Me.lblHost.AutoSize = True
+        Me.lblHost.Location = New System.Drawing.Point(6, 16)
+        Me.lblHost.Name = "lblHost"
+        Me.lblHost.Size = New System.Drawing.Size(49, 13)
+        Me.lblHost.TabIndex = 18
+        Me.lblHost.Text = "localhost"
+        '
+        'lblUser
+        '
+        Me.lblUser.AutoSize = True
+        Me.lblUser.Location = New System.Drawing.Point(6, 42)
+        Me.lblUser.Name = "lblUser"
+        Me.lblUser.Size = New System.Drawing.Size(25, 13)
+        Me.lblUser.TabIndex = 20
+        Me.lblUser.Text = "root"
+        '
+        'lblDB
+        '
+        Me.lblDB.AutoSize = True
+        Me.lblDB.Location = New System.Drawing.Point(6, 29)
+        Me.lblDB.Name = "lblDB"
+        Me.lblDB.Size = New System.Drawing.Size(48, 13)
+        Me.lblDB.TabIndex = 19
+        Me.lblDB.Text = "hg18test"
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.listFiles)
+        Me.GroupBox6.Controls.Add(Me.btnClustering)
+        Me.GroupBox6.Controls.Add(Me.Label2)
+        Me.GroupBox6.Location = New System.Drawing.Point(352, 12)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(337, 325)
+        Me.GroupBox6.TabIndex = 18
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Clustering"
+        '
+        'listFiles
+        '
+        Me.listFiles.AllowDrop = True
+        Me.listFiles.Location = New System.Drawing.Point(6, 37)
+        Me.listFiles.Name = "listFiles"
+        Me.listFiles.Size = New System.Drawing.Size(121, 262)
+        Me.listFiles.TabIndex = 18
+        Me.listFiles.UseCompatibleStateImageBehavior = False
+        Me.listFiles.View = System.Windows.Forms.View.List
+        '
+        'btnClustering
+        '
+        Me.btnClustering.Location = New System.Drawing.Point(204, 208)
+        Me.btnClustering.Name = "btnClustering"
+        Me.btnClustering.Size = New System.Drawing.Size(75, 23)
+        Me.btnClustering.TabIndex = 17
+        Me.btnClustering.Text = "Cluster!"
+        Me.btnClustering.UseVisualStyleBackColor = True
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(3, 16)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(150, 13)
+        Me.Label2.TabIndex = 16
+        Me.Label2.Text = "Drag-and-drop matrix files here"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(497, 307)
-        Me.Controls.Add(Me.GroupBox2)
-        Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.btnCopy)
-        Me.Controls.Add(Me.btnClear)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.btnConvert)
-        Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.btnRandFOIs)
-        Me.Controls.Add(Me.btnConnect)
-        Me.Controls.Add(Me.btnExtractAllGFs)
+        Me.ClientSize = New System.Drawing.Size(701, 560)
+        Me.Controls.Add(Me.GroupBox6)
+        Me.Controls.Add(Me.GroupBox4)
+        Me.Controls.Add(Me.GroupBox3)
         Me.Name = "Form1"
         Me.Text = "GenomeRunnerMisc"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents btnExtractAllGFs As System.Windows.Forms.Button
@@ -222,5 +343,15 @@ Partial Class Form1
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents rbtnSourceID As System.Windows.Forms.RadioButton
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
+    Friend WithEvents lblUser As System.Windows.Forms.Label
+    Friend WithEvents lblDB As System.Windows.Forms.Label
+    Friend WithEvents lblHost As System.Windows.Forms.Label
+    Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnClustering As System.Windows.Forms.Button
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents listFiles As System.Windows.Forms.ListView
 
 End Class

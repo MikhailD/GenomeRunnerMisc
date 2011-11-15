@@ -31,6 +31,7 @@ Public Class Form1
             uServer = GetSetting("GenomeRunner", "Database", "uServer")
             uDatabase = GetSetting("GenomeRunner", "Database", "uDatabase")
         End Try
+        lblHost.Text = uServer : lblDB.Text = uDatabase : lblUser.Text = uName
         connectionString = "Server=" & uServer & ";Database=" & uDatabase & ";User ID=" & uName & ";Password=" & uPassword
         Return connectionString
     End Function
@@ -265,4 +266,77 @@ Public Class Form1
     End Sub
 
 
+    Private Sub btnClustering_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClustering.Click
+        'Clustering of 
+        If listFiles.Items.Count > 0 Then                                           'Proceed only if files available
+            Dim mat As MLApp.MLApp = New MLApp.MLApp()                              'Initialize new Matlab instance
+            mat.Execute("close all hidden;")                                        'Close previously created figures and histograms
+            For Each FileName As ListItemFile In listFiles.Items                    'Process each file
+                Dim readLineSP As String()                                          'Array to keep split string
+                Dim ColNames As List(Of String) = New List(Of String), RowNames As List(Of String) = New List(Of String) 'Row/Column names storage
+                Using reader As StreamReader = New StreamReader(FileName.filPath)
+                    readLineSP = reader.ReadLine.Split(vbTab)                       'First line is header
+                    For Each s As String In readLineSP                              'And each element in it
+                        ColNames.Add(s)                                             'is added to the list
+                    Next
+                    ColNames.RemoveRange(0, 1)                                      'Remove the first element, which is not used
+                    While Not reader.EndOfStream                                    'Go through each row
+                        readLineSP = reader.ReadLine.Split(vbTab)                   'Read the line
+                        RowNames.Add(readLineSP(0))                                 'and store only the first element, row name
+                    End While
+                End Using
+                mat.Execute("clear all")                                            'Clear all values in Matlab space
+                mat.PutWorkspaceData("ColNames", "base", ColNames.ToArray)          'Put ColNames array into Matlab
+                mat.Execute("ColNames=ColNames';")                                  'Transpose it, so column names are horisontal
+                mat.PutWorkspaceData("RowNames", "base", RowNames.ToArray)          'Put RowNames array
+                mat.Execute("matrix=dlmread('" & FileName.filPath & "', '\t',1,1);") 'Read the matrix from the file, starting from row 1, column 1
+                'http://www.mathworks.com/help/toolbox/bioinfo/ref/clustergram.html
+                mat.Execute("clustergram(matrix,'ColumnLabels', ColNames, 'RowLabels', RowNames, 'Standardize', 'none','Symmetric',true,'Colormap', 'redgreencmap','DisplayRange',3);")
+            Next
+        Else
+            MessageBox.Show("Need at least one matrix file to cluster")
+        End If
+    End Sub
+
+    'stores the filepath as a variable for later use
+    Private Class ListItemFile
+        Inherits ListViewItem
+        Public filPath As String
+        Public fileDir As String
+        Public fileName As String
+    End Class
+
+    Private Sub listFiles_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles listFiles.DragDrop
+        If (e.Data.GetDataPresent(DataFormats.FileDrop) = True) Then
+            For Each oneFile As String In _
+              e.Data.GetData(DataFormats.FileDrop)
+                Dim FileName_Ext() As String = Strings.Split(oneFile, "\")
+                Dim nFile As New ListItemFile
+                nFile.filPath = oneFile
+                nFile.Text = FileName_Ext(FileName_Ext.Length - 1)
+                nFile.fileDir = oneFile.Replace(nFile.Text, "")
+                Dim FileName() As String = Strings.Split(FileName_Ext(FileName_Ext.Length - 1), ".")
+                nFile.fileName = FileName(0)
+                listFiles.Items.Add(nFile)
+            Next oneFile
+        End If
+
+        'If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+        '    Dim MyFiles() As String
+        '    Dim i As Integer
+
+        '    ' Assign the files to an array.
+        '    MyFiles = e.Data.GetData(DataFormats.FileDrop)
+        '    ' Loop through the array and add the files to the list.
+        '    For i = 0 To MyFiles.Length - 1
+        '        listFiles.Items.Add(MyFiles(i))
+        '    Next
+        'End If
+    End Sub
+
+    Private Sub listFiles_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles listFiles.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.All
+        End If
+    End Sub
 End Class
