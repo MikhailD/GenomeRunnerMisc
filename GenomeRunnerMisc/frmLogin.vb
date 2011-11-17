@@ -11,10 +11,10 @@ Public Class frmLogin
 
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
         If txtUsername.Text <> vbNullString And txtPassword.Text <> vbNullString Then
-            SaveSetting("GenomeRunner", "Database", "uName", txtUsername.Text)
-            SaveSetting("GenomeRunner", "Database", "uPassword", txtPassword.Text)
-            SaveSetting("GenomeRunner", "Database", "uServer", txtServer.Text)
-            SaveSetting("GenomeRunner", "Database", "uDatabase", txtDatabase.Text)
+            SaveSetting("GenomeRunnerMisc", "Database", "uName", txtUsername.Text)
+            SaveSetting("GenomeRunnerMisc", "Database", "uPassword", txtPassword.Text)
+            SaveSetting("GenomeRunnerMisc", "Database", "uServer", txtServer.Text)
+            SaveSetting("GenomeRunnerMisc", "Database", "uDatabase", txtDatabase.Text)
         End If
         Me.Close()
     End Sub

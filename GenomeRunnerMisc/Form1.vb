@@ -17,21 +17,20 @@ Public Class Form1
         'gets the connection string values from the registry if they exist
         Dim connectionString As String
         Try
-            uName = GetSetting("GenomeRunner", "Database", "uName")
-            uPassword = GetSetting("GenomeRunner", "Database", "uPassword")
-            uServer = GetSetting("GenomeRunner", "Database", "uServer")
-            uDatabase = GetSetting("GenomeRunner", "Database", "uDatabase")
+            uName = GetSetting("GenomeRunnerMisc", "Database", "uName")
+            uPassword = GetSetting("GenomeRunnerMisc", "Database", "uPassword")
+            uServer = GetSetting("GenomeRunnerMisc", "Database", "uServer")
+            uDatabase = GetSetting("GenomeRunnerMisc", "Database", "uDatabase")
         Catch
-            SaveSetting("GenomeRunner", "Database", "uName", "genomerunner")
-            SaveSetting("GenomeRunner", "Database", "uPassword", "genomerunner")
-            SaveSetting("GenomeRunner", "Database", "uServer", "156.110.144.34")
-            SaveSetting("GenomeRunner", "Database", "uDatabase", "hg18test")
-            uName = GetSetting("GenomeRunner", "Database", "uName")
-            uPassword = GetSetting("GenomeRunner", "Database", "uPassword")
-            uServer = GetSetting("GenomeRunner", "Database", "uServer")
-            uDatabase = GetSetting("GenomeRunner", "Database", "uDatabase")
+            SaveSetting("GenomeRunnerMisc", "Database", "uName", "genomerunner")
+            SaveSetting("GenomeRunnerMisc", "Database", "uPassword", "genomerunner")
+            SaveSetting("GenomeRunnerMisc", "Database", "uServer", "156.110.144.34")
+            SaveSetting("GenomeRunnerMisc", "Database", "uDatabase", "hg18test")
+            uName = GetSetting("GenomeRunnerMisc", "Database", "uName")
+            uPassword = GetSetting("GenomeRunnerMisc", "Database", "uPassword")
+            uServer = GetSetting("GenomeRunnerMisc", "Database", "uServer")
+            uDatabase = GetSetting("GenomeRunnerMisc", "Database", "uDatabase")
         End Try
-        lblHost.Text = uServer : lblDB.Text = uDatabase : lblUser.Text = uName
         connectionString = "Server=" & uServer & ";Database=" & uDatabase & ";User ID=" & uName & ";Password=" & uPassword
         Return connectionString
     End Function
@@ -57,7 +56,7 @@ Public Class Form1
                 ConnectionString = GetConnectionSettings(uName, uPassword, uServer, uDatabase)
             End Try
         End While
-
+        lblHost.Text = uServer : lblDB.Text = uDatabase : lblUser.Text = uName
     End Sub
 
 
@@ -338,5 +337,9 @@ Public Class Form1
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             e.Effect = DragDropEffects.All
         End If
+    End Sub
+
+    Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        OpenDatabase()
     End Sub
 End Class

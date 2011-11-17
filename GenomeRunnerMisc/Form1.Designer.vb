@@ -241,7 +241,7 @@ Partial Class Form1
         'lblHost
         '
         Me.lblHost.AutoSize = True
-        Me.lblHost.Location = New System.Drawing.Point(6, 16)
+        Me.lblHost.Location = New System.Drawing.Point(6, 29)
         Me.lblHost.Name = "lblHost"
         Me.lblHost.Size = New System.Drawing.Size(49, 13)
         Me.lblHost.TabIndex = 18
@@ -250,20 +250,20 @@ Partial Class Form1
         'lblUser
         '
         Me.lblUser.AutoSize = True
-        Me.lblUser.Location = New System.Drawing.Point(6, 42)
+        Me.lblUser.Location = New System.Drawing.Point(6, 16)
         Me.lblUser.Name = "lblUser"
-        Me.lblUser.Size = New System.Drawing.Size(25, 13)
+        Me.lblUser.Size = New System.Drawing.Size(27, 13)
         Me.lblUser.TabIndex = 20
-        Me.lblUser.Text = "root"
+        Me.lblUser.Text = "user"
         '
         'lblDB
         '
         Me.lblDB.AutoSize = True
-        Me.lblDB.Location = New System.Drawing.Point(6, 29)
+        Me.lblDB.Location = New System.Drawing.Point(6, 46)
         Me.lblDB.Name = "lblDB"
-        Me.lblDB.Size = New System.Drawing.Size(48, 13)
+        Me.lblDB.Size = New System.Drawing.Size(22, 13)
         Me.lblDB.TabIndex = 19
-        Me.lblDB.Text = "hg18test"
+        Me.lblDB.Text = "DB"
         '
         'GroupBox6
         '
