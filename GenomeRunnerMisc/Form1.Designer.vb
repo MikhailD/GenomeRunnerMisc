@@ -46,12 +46,17 @@ Partial Class Form1
         Me.listFiles = New System.Windows.Forms.ListView()
         Me.btnClustering = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.rbtnOutputBoth = New System.Windows.Forms.RadioButton()
+        Me.rbtnOutputConverted = New System.Windows.Forms.RadioButton()
+        Me.btnGOquery = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
+        Me.GroupBox7.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnExtractAllGFs
@@ -83,7 +88,7 @@ Partial Class Form1
         '
         'btnConvert
         '
-        Me.btnConvert.Location = New System.Drawing.Point(197, 208)
+        Me.btnConvert.Location = New System.Drawing.Point(192, 235)
         Me.btnConvert.Name = "btnConvert"
         Me.btnConvert.Size = New System.Drawing.Size(75, 23)
         Me.btnConvert.TabIndex = 4
@@ -114,7 +119,7 @@ Partial Class Form1
         '
         'btnClear
         '
-        Me.btnClear.Location = New System.Drawing.Point(197, 266)
+        Me.btnClear.Location = New System.Drawing.Point(192, 293)
         Me.btnClear.Name = "btnClear"
         Me.btnClear.Size = New System.Drawing.Size(75, 23)
         Me.btnClear.TabIndex = 6
@@ -123,7 +128,7 @@ Partial Class Form1
         '
         'btnCopy
         '
-        Me.btnCopy.Location = New System.Drawing.Point(197, 237)
+        Me.btnCopy.Location = New System.Drawing.Point(192, 264)
         Me.btnCopy.Name = "btnCopy"
         Me.btnCopy.Size = New System.Drawing.Size(75, 23)
         Me.btnCopy.TabIndex = 7
@@ -169,7 +174,7 @@ Partial Class Form1
         '
         Me.GroupBox1.Controls.Add(Me.rbtnComma)
         Me.GroupBox1.Controls.Add(Me.rbtnPipe)
-        Me.GroupBox1.Location = New System.Drawing.Point(163, 33)
+        Me.GroupBox1.Location = New System.Drawing.Point(163, 16)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(160, 66)
         Me.GroupBox1.TabIndex = 13
@@ -180,7 +185,7 @@ Partial Class Form1
         '
         Me.GroupBox2.Controls.Add(Me.rbtnSourceID)
         Me.GroupBox2.Controls.Add(Me.rbtn3stars)
-        Me.GroupBox2.Location = New System.Drawing.Point(163, 117)
+        Me.GroupBox2.Location = New System.Drawing.Point(163, 88)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(160, 63)
         Me.GroupBox2.TabIndex = 14
@@ -199,6 +204,7 @@ Partial Class Form1
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.GroupBox7)
         Me.GroupBox3.Controls.Add(Me.TextBox1)
         Me.GroupBox3.Controls.Add(Me.btnConvert)
         Me.GroupBox3.Controls.Add(Me.GroupBox2)
@@ -215,6 +221,7 @@ Partial Class Form1
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.btnGOquery)
         Me.GroupBox4.Controls.Add(Me.GroupBox5)
         Me.GroupBox4.Controls.Add(Me.btnConnect)
         Me.GroupBox4.Controls.Add(Me.btnExtractAllGFs)
@@ -305,6 +312,49 @@ Partial Class Form1
         Me.Label2.TabIndex = 16
         Me.Label2.Text = "Drag-and-drop matrix files here"
         '
+        'GroupBox7
+        '
+        Me.GroupBox7.Controls.Add(Me.rbtnOutputConverted)
+        Me.GroupBox7.Controls.Add(Me.rbtnOutputBoth)
+        Me.GroupBox7.Location = New System.Drawing.Point(163, 158)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(160, 73)
+        Me.GroupBox7.TabIndex = 15
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Output"
+        '
+        'rbtnOutputBoth
+        '
+        Me.rbtnOutputBoth.AutoSize = True
+        Me.rbtnOutputBoth.Checked = True
+        Me.rbtnOutputBoth.Location = New System.Drawing.Point(9, 20)
+        Me.rbtnOutputBoth.Name = "rbtnOutputBoth"
+        Me.rbtnOutputBoth.Size = New System.Drawing.Size(131, 17)
+        Me.rbtnOutputBoth.TabIndex = 0
+        Me.rbtnOutputBoth.TabStop = True
+        Me.rbtnOutputBoth.Text = "Source and converted"
+        Me.rbtnOutputBoth.UseVisualStyleBackColor = True
+        '
+        'rbtnOutputConverted
+        '
+        Me.rbtnOutputConverted.AutoSize = True
+        Me.rbtnOutputConverted.Location = New System.Drawing.Point(9, 43)
+        Me.rbtnOutputConverted.Name = "rbtnOutputConverted"
+        Me.rbtnOutputConverted.Size = New System.Drawing.Size(96, 17)
+        Me.rbtnOutputConverted.TabIndex = 1
+        Me.rbtnOutputConverted.TabStop = True
+        Me.rbtnOutputConverted.Text = "Converted only"
+        Me.rbtnOutputConverted.UseVisualStyleBackColor = True
+        '
+        'btnGOquery
+        '
+        Me.btnGOquery.Location = New System.Drawing.Point(248, 19)
+        Me.btnGOquery.Name = "btnGOquery"
+        Me.btnGOquery.Size = New System.Drawing.Size(75, 23)
+        Me.btnGOquery.TabIndex = 16
+        Me.btnGOquery.Text = "GO query"
+        Me.btnGOquery.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -326,6 +376,8 @@ Partial Class Form1
         Me.GroupBox5.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
+        Me.GroupBox7.ResumeLayout(False)
+        Me.GroupBox7.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -353,5 +405,9 @@ Partial Class Form1
     Friend WithEvents btnClustering As System.Windows.Forms.Button
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents listFiles As System.Windows.Forms.ListView
+    Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
+    Friend WithEvents rbtnOutputConverted As System.Windows.Forms.RadioButton
+    Friend WithEvents rbtnOutputBoth As System.Windows.Forms.RadioButton
+    Friend WithEvents btnGOquery As System.Windows.Forms.Button
 
 End Class

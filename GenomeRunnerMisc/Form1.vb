@@ -47,7 +47,7 @@ Public Class Form1
         While ConnectionWorks = False
             Try
                 cn = New MySqlConnection(ConnectionString) : cn.Open()
-                cmd = New MySqlCommand("SELECT id FROM genomerunner limit 1", cn)
+                cmd = New MySqlCommand("select table_name from information_schema.tables limit 1;", cn)
                 dr = cmd.ExecuteReader()
                 ConnectionWorks = True
                 dr.Close()
@@ -235,7 +235,8 @@ Public Class Form1
                 'If the last symbol is a separator, remove it
                 If strSplit(i).Substring(strSplit(i).Length - 1) = strSeparator Then strSplit(i) = strSplit(i).Substring(0, strSplit(i).Length - 1)
                 strSubSplit = strSplit(i).Split(strSeparator)    'Check if there's something pipe-separated
-                strSplit(i) &= vbTab                    'Add a tab, to separate converted names
+                If rbtnOutputBoth.Checked = True Then strSplit(i) &= vbTab 'Add a tab, to separate converted names
+                If rbtnOutputConverted.Checked = True Then strSplit(i) = vbNullString 'Remove source ID, only converted ID will be kept
                 For j = 0 To strSubSplit.Count - 1      'Run through each member of pipe-separated string
                     cmd = New MySqlCommand("SELECT geneSymbol FROM kgxref WHERE refseq='" & strSubSplit(j) & "';", cn)
                     dr = cmd.ExecuteReader
@@ -341,5 +342,32 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         OpenDatabase()
+    End Sub
+
+    Private Sub btnGOquery_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGOquery.Click
+        OpenDatabase()
+        Dim go_id, go_name, go_name1 As List(Of String), gene_id_count As List(Of Integer) = New List(Of Integer)
+        go_id = New List(Of String): go_name= New List(Of String): go_name1 = New List(Of String)
+        cmd = New MySqlCommand("SELECT go_id,go_name FROM go where go_name like '%immun%';", cn)
+        dr = cmd.ExecuteReader
+        While dr.Read
+            go_id.Add(dr(0)) : go_name.Add(dr(1))
+        End While
+        dr.Close() : cmd.Dispose()
+        For i = 1 To go_id.Count - 1
+            cmd = New MySqlCommand("SELECT COUNT(gene_id) FROM gene_go WHERE go_id=" & go_id(i) & " AND tax_id=9606;", cn)
+            dr = cmd.ExecuteReader
+            If dr.HasRows Then
+                dr.Read()
+                go_name1.Add(go_name(i)) : gene_id_count.Add(dr(0))
+            End If
+            dr.Close() : cmd.Dispose()
+        Next
+        Using writer As StreamWriter = New StreamWriter("F:\333.txt")
+            writer.WriteLine("GO name" & vbTab & "# of genes")
+            For i = 1 To go_name1.Count - 1
+                writer.WriteLine(go_name1(i) & vbTab & gene_id_count(i))
+            Next
+        End Using
     End Sub
 End Class

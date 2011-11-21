@@ -16,6 +16,9 @@ Public Class frmLogin
             SaveSetting("GenomeRunnerMisc", "Database", "uServer", txtServer.Text)
             SaveSetting("GenomeRunnerMisc", "Database", "uDatabase", txtDatabase.Text)
         End If
+        With Form1
+            .lblHost.Text = txtServer.Text : .lblDB.Text = txtDatabase.Text : .lblUser.Text = txtUsername.Text
+        End With
         Me.Close()
     End Sub
 
