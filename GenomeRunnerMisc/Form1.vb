@@ -342,6 +342,7 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         OpenDatabase()
+        TextBox1.MaxLength = Int32.MaxValue
     End Sub
 
     Private Sub btnGOquery_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGOquery.Click
@@ -369,5 +370,21 @@ Public Class Form1
                 writer.WriteLine(go_name1(i) & vbTab & gene_id_count(i))
             Next
         End Using
+    End Sub
+
+    Private Sub btnVistaEnhancers_Click(sender As System.Object, e As System.EventArgs) Handles btnVistaEnhancers.Click
+        'Processes file downloaded from http://enhancer.lbl.gov/cgi-bin/imagedb3.pl?show=1;page=1;form=search;search.form=no;page_size=100;search.result=yes;order=mm;action=search
+        Dim strRead As String
+        Using reader As StreamReader = New StreamReader("F:\WorkOMRF\Databases\enhancers.lbl.gov\imagedb3.txt")
+            Using writer As StreamWriter = New StreamWriter("F:\WorkOMRF\Databases\enhancers.lbl.gov\imagedb3_mouse_coords.txt")
+                While Not reader.EndOfStream
+                    strRead = reader.ReadLine
+                    If ">Mouse" = Mid(strRead, 1, 6) Then
+                        writer.WriteLine(strRead)
+                    End If
+                End While
+            End Using
+        End Using
+        MsgBox("Done processing")
     End Sub
 End Class

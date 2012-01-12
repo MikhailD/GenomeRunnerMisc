@@ -37,7 +37,11 @@ Partial Class Form1
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.rbtnSourceID = New System.Windows.Forms.RadioButton()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.rbtnOutputConverted = New System.Windows.Forms.RadioButton()
+        Me.rbtnOutputBoth = New System.Windows.Forms.RadioButton()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.btnGOquery = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.lblHost = New System.Windows.Forms.Label()
         Me.lblUser = New System.Windows.Forms.Label()
@@ -46,17 +50,16 @@ Partial Class Form1
         Me.listFiles = New System.Windows.Forms.ListView()
         Me.btnClustering = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
-        Me.rbtnOutputBoth = New System.Windows.Forms.RadioButton()
-        Me.rbtnOutputConverted = New System.Windows.Forms.RadioButton()
-        Me.btnGOquery = New System.Windows.Forms.Button()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.btnVistaEnhancers = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        Me.GroupBox7.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
-        Me.GroupBox7.SuspendLayout()
+        Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnExtractAllGFs
@@ -101,6 +104,7 @@ Partial Class Form1
         Me.TextBox1.AcceptsTab = True
         Me.TextBox1.AllowDrop = True
         Me.TextBox1.Location = New System.Drawing.Point(6, 37)
+        Me.TextBox1.MaxLength = 327670000
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both
@@ -219,6 +223,40 @@ Partial Class Form1
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Conversion"
         '
+        'GroupBox7
+        '
+        Me.GroupBox7.Controls.Add(Me.rbtnOutputConverted)
+        Me.GroupBox7.Controls.Add(Me.rbtnOutputBoth)
+        Me.GroupBox7.Location = New System.Drawing.Point(163, 158)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(160, 73)
+        Me.GroupBox7.TabIndex = 15
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Output"
+        '
+        'rbtnOutputConverted
+        '
+        Me.rbtnOutputConverted.AutoSize = True
+        Me.rbtnOutputConverted.Location = New System.Drawing.Point(9, 43)
+        Me.rbtnOutputConverted.Name = "rbtnOutputConverted"
+        Me.rbtnOutputConverted.Size = New System.Drawing.Size(96, 17)
+        Me.rbtnOutputConverted.TabIndex = 1
+        Me.rbtnOutputConverted.TabStop = True
+        Me.rbtnOutputConverted.Text = "Converted only"
+        Me.rbtnOutputConverted.UseVisualStyleBackColor = True
+        '
+        'rbtnOutputBoth
+        '
+        Me.rbtnOutputBoth.AutoSize = True
+        Me.rbtnOutputBoth.Checked = True
+        Me.rbtnOutputBoth.Location = New System.Drawing.Point(9, 20)
+        Me.rbtnOutputBoth.Name = "rbtnOutputBoth"
+        Me.rbtnOutputBoth.Size = New System.Drawing.Size(131, 17)
+        Me.rbtnOutputBoth.TabIndex = 0
+        Me.rbtnOutputBoth.TabStop = True
+        Me.rbtnOutputBoth.Text = "Source and converted"
+        Me.rbtnOutputBoth.UseVisualStyleBackColor = True
+        '
         'GroupBox4
         '
         Me.GroupBox4.Controls.Add(Me.btnGOquery)
@@ -232,6 +270,15 @@ Partial Class Form1
         Me.GroupBox4.TabIndex = 17
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Misc"
+        '
+        'btnGOquery
+        '
+        Me.btnGOquery.Location = New System.Drawing.Point(248, 19)
+        Me.btnGOquery.Name = "btnGOquery"
+        Me.btnGOquery.Size = New System.Drawing.Size(75, 23)
+        Me.btnGOquery.TabIndex = 16
+        Me.btnGOquery.Text = "GO query"
+        Me.btnGOquery.UseVisualStyleBackColor = True
         '
         'GroupBox5
         '
@@ -312,54 +359,31 @@ Partial Class Form1
         Me.Label2.TabIndex = 16
         Me.Label2.Text = "Drag-and-drop matrix files here"
         '
-        'GroupBox7
+        'GroupBox8
         '
-        Me.GroupBox7.Controls.Add(Me.rbtnOutputConverted)
-        Me.GroupBox7.Controls.Add(Me.rbtnOutputBoth)
-        Me.GroupBox7.Location = New System.Drawing.Point(163, 158)
-        Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(160, 73)
-        Me.GroupBox7.TabIndex = 15
-        Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "Output"
+        Me.GroupBox8.Controls.Add(Me.btnVistaEnhancers)
+        Me.GroupBox8.Location = New System.Drawing.Point(352, 353)
+        Me.GroupBox8.Name = "GroupBox8"
+        Me.GroupBox8.Size = New System.Drawing.Size(337, 198)
+        Me.GroupBox8.TabIndex = 19
+        Me.GroupBox8.TabStop = False
+        Me.GroupBox8.Text = "Misc"
         '
-        'rbtnOutputBoth
+        'btnVistaEnhancers
         '
-        Me.rbtnOutputBoth.AutoSize = True
-        Me.rbtnOutputBoth.Checked = True
-        Me.rbtnOutputBoth.Location = New System.Drawing.Point(9, 20)
-        Me.rbtnOutputBoth.Name = "rbtnOutputBoth"
-        Me.rbtnOutputBoth.Size = New System.Drawing.Size(131, 17)
-        Me.rbtnOutputBoth.TabIndex = 0
-        Me.rbtnOutputBoth.TabStop = True
-        Me.rbtnOutputBoth.Text = "Source and converted"
-        Me.rbtnOutputBoth.UseVisualStyleBackColor = True
-        '
-        'rbtnOutputConverted
-        '
-        Me.rbtnOutputConverted.AutoSize = True
-        Me.rbtnOutputConverted.Location = New System.Drawing.Point(9, 43)
-        Me.rbtnOutputConverted.Name = "rbtnOutputConverted"
-        Me.rbtnOutputConverted.Size = New System.Drawing.Size(96, 17)
-        Me.rbtnOutputConverted.TabIndex = 1
-        Me.rbtnOutputConverted.TabStop = True
-        Me.rbtnOutputConverted.Text = "Converted only"
-        Me.rbtnOutputConverted.UseVisualStyleBackColor = True
-        '
-        'btnGOquery
-        '
-        Me.btnGOquery.Location = New System.Drawing.Point(248, 19)
-        Me.btnGOquery.Name = "btnGOquery"
-        Me.btnGOquery.Size = New System.Drawing.Size(75, 23)
-        Me.btnGOquery.TabIndex = 16
-        Me.btnGOquery.Text = "GO query"
-        Me.btnGOquery.UseVisualStyleBackColor = True
+        Me.btnVistaEnhancers.Location = New System.Drawing.Point(3, 16)
+        Me.btnVistaEnhancers.Name = "btnVistaEnhancers"
+        Me.btnVistaEnhancers.Size = New System.Drawing.Size(94, 23)
+        Me.btnVistaEnhancers.TabIndex = 0
+        Me.btnVistaEnhancers.Text = "Vista Enhancers"
+        Me.btnVistaEnhancers.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(701, 560)
+        Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.GroupBox3)
@@ -371,13 +395,14 @@ Partial Class Form1
         Me.GroupBox2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        Me.GroupBox7.ResumeLayout(False)
+        Me.GroupBox7.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
-        Me.GroupBox7.ResumeLayout(False)
-        Me.GroupBox7.PerformLayout()
+        Me.GroupBox8.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -409,5 +434,7 @@ Partial Class Form1
     Friend WithEvents rbtnOutputConverted As System.Windows.Forms.RadioButton
     Friend WithEvents rbtnOutputBoth As System.Windows.Forms.RadioButton
     Friend WithEvents btnGOquery As System.Windows.Forms.Button
+    Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnVistaEnhancers As System.Windows.Forms.Button
 
 End Class
