@@ -127,7 +127,7 @@ Public Class Form1
 
     Function TrimStr(ByRef StringToTrim As String) As String
         'http://www.vbdotnetforums.com/vb-net-general-discussion/31506-how-remove-all-special-characters-string-visual-basic-net.html
-        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\:.-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/".ToCharArray() 
+        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\,:.-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/".ToCharArray() 
         Dim sb As New System.Text.StringBuilder
         For Each ch As Char In StringToTrim
             If Array.IndexOf(illegalChars, ch) = -1 Then
@@ -386,5 +386,34 @@ Public Class Form1
             End Using
         End Using
         MsgBox("Done processing")
+    End Sub
+
+    Private Sub btnGenomeGovProcessing_Click(sender As System.Object, e As System.EventArgs) Handles btnGenomeGovProcessing.Click
+        Dim Diseases As ArrayList = New ArrayList
+        Dim strRead As String, strSplit As String()
+        Using reader As StreamReader = New StreamReader("F:\WorkOMRF\Databases\GWAS catalog\Diseases.txt")
+            While Not reader.EndOfStream
+                Diseases.Add(reader.ReadLine)
+            End While
+        End Using
+
+        For Each disease In Diseases
+            Debug.Print("processing " & disease)
+            Using writer As StreamWriter = New StreamWriter("F:\WorkOMRF\Databases\GWAS catalog\" & TrimStr(disease.ToString) & ".bed")
+                Using reader As StreamReader = New StreamReader("F:\WorkOMRF\Databases\GWAS catalog\gwascatalog.txt")
+                    While Not reader.EndOfStream
+                        strRead = reader.ReadLine : strSplit = Split(strRead, vbTab)
+                        If strRead <> "" Then
+                            If strSplit(7) = disease Then
+                                If strSplit(11) <> "" And strSplit(12) <> "" Then writer.WriteLine("chr" & strSplit(11) & vbTab & strSplit(12) & vbTab & "" & vbTab & strSplit(14) & "|" & strSplit(21))
+                            End If
+                        End If
+                    End While
+                End Using
+            End Using
+        Next
+
+        MsgBox("Done processing genome.gov")
+
     End Sub
 End Class

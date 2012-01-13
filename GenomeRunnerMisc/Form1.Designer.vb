@@ -52,6 +52,7 @@ Partial Class Form1
         Me.Label2 = New System.Windows.Forms.Label()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.btnVistaEnhancers = New System.Windows.Forms.Button()
+        Me.btnGenomeGovProcessing = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -361,6 +362,7 @@ Partial Class Form1
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.btnGenomeGovProcessing)
         Me.GroupBox8.Controls.Add(Me.btnVistaEnhancers)
         Me.GroupBox8.Location = New System.Drawing.Point(352, 353)
         Me.GroupBox8.Name = "GroupBox8"
@@ -371,12 +373,21 @@ Partial Class Form1
         '
         'btnVistaEnhancers
         '
-        Me.btnVistaEnhancers.Location = New System.Drawing.Point(3, 16)
+        Me.btnVistaEnhancers.Location = New System.Drawing.Point(6, 15)
         Me.btnVistaEnhancers.Name = "btnVistaEnhancers"
         Me.btnVistaEnhancers.Size = New System.Drawing.Size(94, 23)
         Me.btnVistaEnhancers.TabIndex = 0
         Me.btnVistaEnhancers.Text = "Vista Enhancers"
         Me.btnVistaEnhancers.UseVisualStyleBackColor = True
+        '
+        'btnGenomeGovProcessing
+        '
+        Me.btnGenomeGovProcessing.Location = New System.Drawing.Point(6, 44)
+        Me.btnGenomeGovProcessing.Name = "btnGenomeGovProcessing"
+        Me.btnGenomeGovProcessing.Size = New System.Drawing.Size(94, 23)
+        Me.btnGenomeGovProcessing.TabIndex = 1
+        Me.btnGenomeGovProcessing.Text = "genome.gov"
+        Me.btnGenomeGovProcessing.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -436,5 +447,6 @@ Partial Class Form1
     Friend WithEvents btnGOquery As System.Windows.Forms.Button
     Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
     Friend WithEvents btnVistaEnhancers As System.Windows.Forms.Button
+    Friend WithEvents btnGenomeGovProcessing As System.Windows.Forms.Button
 
 End Class
