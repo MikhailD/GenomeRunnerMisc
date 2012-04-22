@@ -127,7 +127,7 @@ Public Class Form1
 
     Function TrimStr(ByRef StringToTrim As String) As String
         'http://www.vbdotnetforums.com/vb-net-general-discussion/31506-how-remove-all-special-characters-string-visual-basic-net.html
-        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\,:.-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/".ToCharArray() 
+        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\:.-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/,".ToCharArray() 
         Dim sb As New System.Text.StringBuilder
         For Each ch As Char In StringToTrim
             If Array.IndexOf(illegalChars, ch) = -1 Then
@@ -230,6 +230,7 @@ Public Class Form1
         If rbtnComma.Checked Then strSeparator = ","
 
         For i = 0 To strSplit.Count - 1
+            Dim strDescription As String = vbNullString
             strSplit(i) = TrimStr(strSplit(i)) 'Remove special characters, not commas and pipes
             If strSplit(i) <> vbNullString Then
                 'If the last symbol is a separator, remove it
@@ -238,17 +239,20 @@ Public Class Form1
                 If rbtnOutputBoth.Checked = True Then strSplit(i) &= vbTab 'Add a tab, to separate converted names
                 If rbtnOutputConverted.Checked = True Then strSplit(i) = vbNullString 'Remove source ID, only converted ID will be kept
                 For j = 0 To strSubSplit.Count - 1      'Run through each member of pipe-separated string
-                    cmd = New MySqlCommand("SELECT geneSymbol FROM kgxref WHERE refseq='" & strSubSplit(j) & "';", cn)
+                    cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgXref WHERE refseq='" & strSubSplit(j) & "';", cn)
                     dr = cmd.ExecuteReader
                     If dr.HasRows Then
                         dr.Read() : strSplit(i) &= dr(0) & strSeparator  'Add converted name and a pipe
+                        strDescription &= dr(1) & strSeparator              'Accumulate descriptions
                     Else
                         If rbtn3stars.Checked Then strSplit(i) &= "***" & strSeparator 'Or, if nothing converted, dummy and a pipe
                         If rbtnSourceID.Checked Then strSplit(i) &= strSubSplit(j) & strSeparator 'Or, if nothing converted, source and a pipe
                     End If
                     dr.Close() : cmd.Dispose()
                 Next
-                strSplit(i) = strSplit(i).Substring(0, strSplit(i).Length - 1) 'Remove last pipe
+                strSplit(i) = strSplit(i).Substring(0, strSplit(i).Length - 1)  'Remove last separator
+                strSplit(i) &= vbTab & strDescription                           'Add description
+                strSplit(i) = strSplit(i).Substring(0, strSplit(i).Length - 1)  'Remove last separator again
             End If
         Next
         TextBox1.Text = String.Join(vbCrLf, strSplit)
@@ -414,6 +418,96 @@ Public Class Form1
         Next
 
         MsgBox("Done processing genome.gov")
+
+    End Sub
+
+    Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
+        'Debug.Print(DateTime.Now.ToString("dd-MM-yyyy_hh.mm.sstt"))
+        If File.Exists("F:\1111.TXT.tab") Then
+            Debug.Print("111")
+        End If
+
+    End Sub
+
+    Private Sub btnDiseaseOntology_Click(sender As System.Object, e As System.EventArgs) Handles btnDiseaseOntology.Click
+        Dim DiseaseList As New List(Of String)
+        Using reader As New StreamReader("F:\WorkOMRF\Databases\Disease_Ontology\diseaseontology\HumanDO_no_xrefs.obo")
+            While Not reader.EndOfStream
+                Dim line As String = reader.ReadLine
+                If Mid(line, 1, 5) = "name:" Then DiseaseList.Add(Replace(line, "name: ", vbNullString).ToLower)
+                Debug.Print(line)
+            End While
+        End Using
+        Debug.Print("DO reading done")
+
+        Dim SelectedList As New List(Of String)
+        Dim FilteredList As New List(Of String)
+        Using reader As New StreamReader("F:\WorkOMRF\Databases\GWAS catalog\Diseases.txt")
+            While Not reader.EndOfStream
+                Dim line As String = reader.ReadLine.ToLower
+                SelectedList.Add(line)
+                FilteredList.Add(line)
+            End While
+        End Using
+        Debug.Print("Diseases reading done")
+
+
+        For Each disease In SelectedList
+            If Not DiseaseList.Contains(disease) Then FilteredList.Remove(disease)
+        Next
+        Debug.Print("Filtering done. Total filtered diseases: " & FilteredList.Count)
+
+        Using writer As New StreamWriter("F:\WorkOMRF\Databases\GWAS catalog\Diseases_filtered.txt")
+            For Each disease In FilteredList
+                writer.WriteLine(disease)
+            Next
+        End Using
+
+        For Each disease In FilteredList
+            Dim diseasename As String = TrimStr(Replace(disease, " ", "_"))
+            If File.Exists("F:\WorkOMRF\Databases\GWAS catalog\Diseases\" & diseasename & ".bed") Then
+                File.Copy("F:\WorkOMRF\Databases\GWAS catalog\Diseases\" & diseasename & ".bed", "F:\WorkOMRF\Databases\GWAS catalog\Diseases_filtered\" & diseasename & ".bed")
+            End If
+        Next
+        MsgBox("Done")
+    End Sub
+
+    Private Sub btnConvertTable2name_Click(sender As System.Object, e As System.EventArgs) Handles btnConvertTable2name.Click
+        OpenDatabase()
+        Dim strTxt As String = TextBox1.Text
+        Dim strSplit As String()
+        If InStr(TextBox1.Text, vbCrLf) Then
+            strSplit = strTxt.Split(vbCrLf) 'Create array from the textbox
+        Else
+            strSplit = strTxt.Split(vbLf) 'Create array from the textbox
+        End If
+
+        For i = 0 To strSplit.Count - 1
+            Dim tableName As String = strSplit(i).Replace(vbTab, vbNullString).Trim
+            Dim exons As Boolean = False
+            Dim promoters As Boolean = False
+            If InStr(tableName, "Exons") > 0 Then tableName = tableName.Replace("Exons", vbNullString) : exons = True
+            If InStr(tableName, "Promoter") > 0 Then tableName = tableName.Replace("Promoter", vbNullString) : promoters = True
+            If strSplit(i) <> vbNullString Then
+                strSplit(i) = strSplit(i).Replace(vbCrLf, vbNullString)
+                If rbtnOutputBoth.Checked = True Then strSplit(i) &= vbTab 'Add a tab, to separate converted names
+                If rbtnOutputConverted.Checked = True Then strSplit(i) = vbNullString 'Remove source ID, only converted ID will be kept
+
+                cmd = New MySqlCommand("SELECT FeatureName FROM genomerunner WHERE FeatureTable='" & tableName & "';", cn)
+                dr = cmd.ExecuteReader
+                If dr.HasRows Then
+                    If exons Then strSplit(i) &= "Exons: "
+                    If promoters Then strSplit(i) &= "Promoter: "
+                    dr.Read() : strSplit(i) &= dr(0)
+                Else
+                    If rbtn3stars.Checked Then strSplit(i) &= "***" 'Or, if nothing converted, dummy and a pipe
+                    If rbtnSourceID.Checked Then strSplit(i) &= strSplit(i) 'Or, if nothing converted, source and a pipe
+                End If
+                dr.Close() : cmd.Dispose()
+
+            End If
+        Next
+        TextBox1.Text = String.Join(vbCrLf, strSplit)
 
     End Sub
 End Class

@@ -51,8 +51,11 @@ Partial Class Form1
         Me.btnClustering = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.btnVistaEnhancers = New System.Windows.Forms.Button()
+        Me.btnDiseaseOntology = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.btnGenomeGovProcessing = New System.Windows.Forms.Button()
+        Me.btnVistaEnhancers = New System.Windows.Forms.Button()
+        Me.btnConvertTable2name = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -92,11 +95,12 @@ Partial Class Form1
         '
         'btnConvert
         '
-        Me.btnConvert.Location = New System.Drawing.Point(192, 235)
+        Me.btnConvert.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnConvert.Location = New System.Drawing.Point(163, 237)
         Me.btnConvert.Name = "btnConvert"
         Me.btnConvert.Size = New System.Drawing.Size(75, 23)
         Me.btnConvert.TabIndex = 4
-        Me.btnConvert.Text = "Convert!"
+        Me.btnConvert.Text = "RefSeq2name"
         Me.btnConvert.UseVisualStyleBackColor = True
         '
         'TextBox1
@@ -209,6 +213,7 @@ Partial Class Form1
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.btnConvertTable2name)
         Me.GroupBox3.Controls.Add(Me.GroupBox7)
         Me.GroupBox3.Controls.Add(Me.TextBox1)
         Me.GroupBox3.Controls.Add(Me.btnConvert)
@@ -362,6 +367,8 @@ Partial Class Form1
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.btnDiseaseOntology)
+        Me.GroupBox8.Controls.Add(Me.Button1)
         Me.GroupBox8.Controls.Add(Me.btnGenomeGovProcessing)
         Me.GroupBox8.Controls.Add(Me.btnVistaEnhancers)
         Me.GroupBox8.Location = New System.Drawing.Point(352, 353)
@@ -370,6 +377,33 @@ Partial Class Form1
         Me.GroupBox8.TabIndex = 19
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Misc"
+        '
+        'btnDiseaseOntology
+        '
+        Me.btnDiseaseOntology.Location = New System.Drawing.Point(6, 73)
+        Me.btnDiseaseOntology.Name = "btnDiseaseOntology"
+        Me.btnDiseaseOntology.Size = New System.Drawing.Size(106, 23)
+        Me.btnDiseaseOntology.TabIndex = 20
+        Me.btnDiseaseOntology.Text = "Disease ontology"
+        Me.btnDiseaseOntology.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(256, 169)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 20
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'btnGenomeGovProcessing
+        '
+        Me.btnGenomeGovProcessing.Location = New System.Drawing.Point(6, 44)
+        Me.btnGenomeGovProcessing.Name = "btnGenomeGovProcessing"
+        Me.btnGenomeGovProcessing.Size = New System.Drawing.Size(94, 23)
+        Me.btnGenomeGovProcessing.TabIndex = 1
+        Me.btnGenomeGovProcessing.Text = "genome.gov"
+        Me.btnGenomeGovProcessing.UseVisualStyleBackColor = True
         '
         'btnVistaEnhancers
         '
@@ -380,14 +414,15 @@ Partial Class Form1
         Me.btnVistaEnhancers.Text = "Vista Enhancers"
         Me.btnVistaEnhancers.UseVisualStyleBackColor = True
         '
-        'btnGenomeGovProcessing
+        'btnConvertTable2name
         '
-        Me.btnGenomeGovProcessing.Location = New System.Drawing.Point(6, 44)
-        Me.btnGenomeGovProcessing.Name = "btnGenomeGovProcessing"
-        Me.btnGenomeGovProcessing.Size = New System.Drawing.Size(94, 23)
-        Me.btnGenomeGovProcessing.TabIndex = 1
-        Me.btnGenomeGovProcessing.Text = "genome.gov"
-        Me.btnGenomeGovProcessing.UseVisualStyleBackColor = True
+        Me.btnConvertTable2name.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnConvertTable2name.Location = New System.Drawing.Point(248, 237)
+        Me.btnConvertTable2name.Name = "btnConvertTable2name"
+        Me.btnConvertTable2name.Size = New System.Drawing.Size(75, 23)
+        Me.btnConvertTable2name.TabIndex = 16
+        Me.btnConvertTable2name.Text = "Table2name"
+        Me.btnConvertTable2name.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -448,5 +483,8 @@ Partial Class Form1
     Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
     Friend WithEvents btnVistaEnhancers As System.Windows.Forms.Button
     Friend WithEvents btnGenomeGovProcessing As System.Windows.Forms.Button
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnDiseaseOntology As System.Windows.Forms.Button
+    Friend WithEvents btnConvertTable2name As System.Windows.Forms.Button
 
 End Class
