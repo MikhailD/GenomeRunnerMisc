@@ -510,4 +510,20 @@ Public Class Form1
         TextBox1.Text = String.Join(vbCrLf, strSplit)
 
     End Sub
+
+    Private Sub btnRandGene_Click(sender As System.Object, e As System.EventArgs) Handles btnRandGene.Click
+        OpenDatabase()
+        Dim lstGenes As List(Of String) = New List(Of String), lstRandGenes As List(Of String) = New List(Of String), rndGeneID As UInteger, state As hqrndstate
+        cmd = New MySqlCommand("SELECT gene_symbol FROM gene WHERE tax_id=9606;", cn)
+        dr = cmd.ExecuteReader
+        While dr.Read
+            lstGenes.Add(dr(0))
+        End While
+        dr.Close() : cmd.Dispose()
+        hqrndrandomize(state)
+        For i = 1 To CInt(txtNumber.Text)
+            rndGeneID = hqrnduniformi(state, lstGenes.Count + 1)
+            txtMisc.Text &= lstGenes(rndGeneID) & vbCrLf
+        Next
+    End Sub
 End Class

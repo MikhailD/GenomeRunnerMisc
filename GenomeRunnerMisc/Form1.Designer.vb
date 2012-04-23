@@ -37,25 +37,30 @@ Partial Class Form1
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.rbtnSourceID = New System.Windows.Forms.RadioButton()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.btnConvertTable2name = New System.Windows.Forms.Button()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.rbtnOutputConverted = New System.Windows.Forms.RadioButton()
         Me.rbtnOutputBoth = New System.Windows.Forms.RadioButton()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnDiseaseOntology = New System.Windows.Forms.Button()
         Me.btnGOquery = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.lblHost = New System.Windows.Forms.Label()
         Me.lblUser = New System.Windows.Forms.Label()
         Me.lblDB = New System.Windows.Forms.Label()
+        Me.btnGenomeGovProcessing = New System.Windows.Forms.Button()
+        Me.btnVistaEnhancers = New System.Windows.Forms.Button()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.listFiles = New System.Windows.Forms.ListView()
         Me.btnClustering = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.btnDiseaseOntology = New System.Windows.Forms.Button()
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.btnGenomeGovProcessing = New System.Windows.Forms.Button()
-        Me.btnVistaEnhancers = New System.Windows.Forms.Button()
-        Me.btnConvertTable2name = New System.Windows.Forms.Button()
+        Me.txtMisc = New System.Windows.Forms.TextBox()
+        Me.btnRandGene = New System.Windows.Forms.Button()
+        Me.txtNumber = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -229,6 +234,16 @@ Partial Class Form1
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Conversion"
         '
+        'btnConvertTable2name
+        '
+        Me.btnConvertTable2name.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnConvertTable2name.Location = New System.Drawing.Point(248, 237)
+        Me.btnConvertTable2name.Name = "btnConvertTable2name"
+        Me.btnConvertTable2name.Size = New System.Drawing.Size(75, 23)
+        Me.btnConvertTable2name.TabIndex = 16
+        Me.btnConvertTable2name.Text = "Table2name"
+        Me.btnConvertTable2name.UseVisualStyleBackColor = True
+        '
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.rbtnOutputConverted)
@@ -265,9 +280,13 @@ Partial Class Form1
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.Button1)
+        Me.GroupBox4.Controls.Add(Me.btnDiseaseOntology)
         Me.GroupBox4.Controls.Add(Me.btnGOquery)
         Me.GroupBox4.Controls.Add(Me.GroupBox5)
+        Me.GroupBox4.Controls.Add(Me.btnGenomeGovProcessing)
         Me.GroupBox4.Controls.Add(Me.btnConnect)
+        Me.GroupBox4.Controls.Add(Me.btnVistaEnhancers)
         Me.GroupBox4.Controls.Add(Me.btnExtractAllGFs)
         Me.GroupBox4.Controls.Add(Me.btnRandFOIs)
         Me.GroupBox4.Location = New System.Drawing.Point(12, 343)
@@ -276,6 +295,24 @@ Partial Class Form1
         Me.GroupBox4.TabIndex = 17
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Misc"
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(253, 179)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 20
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'btnDiseaseOntology
+        '
+        Me.btnDiseaseOntology.Location = New System.Drawing.Point(207, 145)
+        Me.btnDiseaseOntology.Name = "btnDiseaseOntology"
+        Me.btnDiseaseOntology.Size = New System.Drawing.Size(121, 23)
+        Me.btnDiseaseOntology.TabIndex = 20
+        Me.btnDiseaseOntology.Text = "Disease ontology"
+        Me.btnDiseaseOntology.UseVisualStyleBackColor = True
         '
         'btnGOquery
         '
@@ -325,6 +362,24 @@ Partial Class Form1
         Me.lblDB.TabIndex = 19
         Me.lblDB.Text = "DB"
         '
+        'btnGenomeGovProcessing
+        '
+        Me.btnGenomeGovProcessing.Location = New System.Drawing.Point(207, 116)
+        Me.btnGenomeGovProcessing.Name = "btnGenomeGovProcessing"
+        Me.btnGenomeGovProcessing.Size = New System.Drawing.Size(121, 23)
+        Me.btnGenomeGovProcessing.TabIndex = 1
+        Me.btnGenomeGovProcessing.Text = "genome.gov"
+        Me.btnGenomeGovProcessing.UseVisualStyleBackColor = True
+        '
+        'btnVistaEnhancers
+        '
+        Me.btnVistaEnhancers.Location = New System.Drawing.Point(207, 87)
+        Me.btnVistaEnhancers.Name = "btnVistaEnhancers"
+        Me.btnVistaEnhancers.Size = New System.Drawing.Size(121, 23)
+        Me.btnVistaEnhancers.TabIndex = 0
+        Me.btnVistaEnhancers.Text = "Vista Enhancers"
+        Me.btnVistaEnhancers.UseVisualStyleBackColor = True
+        '
         'GroupBox6
         '
         Me.GroupBox6.Controls.Add(Me.listFiles)
@@ -332,7 +387,7 @@ Partial Class Form1
         Me.GroupBox6.Controls.Add(Me.Label2)
         Me.GroupBox6.Location = New System.Drawing.Point(352, 12)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(337, 325)
+        Me.GroupBox6.Size = New System.Drawing.Size(137, 325)
         Me.GroupBox6.TabIndex = 18
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Clustering"
@@ -342,14 +397,14 @@ Partial Class Form1
         Me.listFiles.AllowDrop = True
         Me.listFiles.Location = New System.Drawing.Point(6, 37)
         Me.listFiles.Name = "listFiles"
-        Me.listFiles.Size = New System.Drawing.Size(121, 262)
+        Me.listFiles.Size = New System.Drawing.Size(121, 250)
         Me.listFiles.TabIndex = 18
         Me.listFiles.UseCompatibleStateImageBehavior = False
         Me.listFiles.View = System.Windows.Forms.View.List
         '
         'btnClustering
         '
-        Me.btnClustering.Location = New System.Drawing.Point(204, 208)
+        Me.btnClustering.Location = New System.Drawing.Point(29, 296)
         Me.btnClustering.Name = "btnClustering"
         Me.btnClustering.Size = New System.Drawing.Size(75, 23)
         Me.btnClustering.TabIndex = 17
@@ -361,68 +416,66 @@ Partial Class Form1
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(3, 16)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(150, 13)
+        Me.Label2.Size = New System.Drawing.Size(126, 13)
         Me.Label2.TabIndex = 16
-        Me.Label2.Text = "Drag-and-drop matrix files here"
+        Me.Label2.Text = "Drag-and-drop matrix files"
         '
         'GroupBox8
         '
-        Me.GroupBox8.Controls.Add(Me.btnDiseaseOntology)
-        Me.GroupBox8.Controls.Add(Me.Button1)
-        Me.GroupBox8.Controls.Add(Me.btnGenomeGovProcessing)
-        Me.GroupBox8.Controls.Add(Me.btnVistaEnhancers)
-        Me.GroupBox8.Location = New System.Drawing.Point(352, 353)
+        Me.GroupBox8.Controls.Add(Me.Label4)
+        Me.GroupBox8.Controls.Add(Me.Label3)
+        Me.GroupBox8.Controls.Add(Me.txtNumber)
+        Me.GroupBox8.Controls.Add(Me.btnRandGene)
+        Me.GroupBox8.Controls.Add(Me.txtMisc)
+        Me.GroupBox8.Location = New System.Drawing.Point(495, 12)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(337, 198)
+        Me.GroupBox8.Size = New System.Drawing.Size(201, 325)
         Me.GroupBox8.TabIndex = 19
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Misc"
         '
-        'btnDiseaseOntology
+        'txtMisc
         '
-        Me.btnDiseaseOntology.Location = New System.Drawing.Point(6, 73)
-        Me.btnDiseaseOntology.Name = "btnDiseaseOntology"
-        Me.btnDiseaseOntology.Size = New System.Drawing.Size(106, 23)
-        Me.btnDiseaseOntology.TabIndex = 20
-        Me.btnDiseaseOntology.Text = "Disease ontology"
-        Me.btnDiseaseOntology.UseVisualStyleBackColor = True
+        Me.txtMisc.Location = New System.Drawing.Point(6, 34)
+        Me.txtMisc.Multiline = True
+        Me.txtMisc.Name = "txtMisc"
+        Me.txtMisc.Size = New System.Drawing.Size(107, 253)
+        Me.txtMisc.TabIndex = 0
         '
-        'Button1
+        'btnRandGene
         '
-        Me.Button1.Location = New System.Drawing.Point(256, 169)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 20
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnRandGene.Location = New System.Drawing.Point(120, 75)
+        Me.btnRandGene.Name = "btnRandGene"
+        Me.btnRandGene.Size = New System.Drawing.Size(75, 23)
+        Me.btnRandGene.TabIndex = 1
+        Me.btnRandGene.Text = "Generate!"
+        Me.btnRandGene.UseVisualStyleBackColor = True
         '
-        'btnGenomeGovProcessing
+        'txtNumber
         '
-        Me.btnGenomeGovProcessing.Location = New System.Drawing.Point(6, 44)
-        Me.btnGenomeGovProcessing.Name = "btnGenomeGovProcessing"
-        Me.btnGenomeGovProcessing.Size = New System.Drawing.Size(94, 23)
-        Me.btnGenomeGovProcessing.TabIndex = 1
-        Me.btnGenomeGovProcessing.Text = "genome.gov"
-        Me.btnGenomeGovProcessing.UseVisualStyleBackColor = True
+        Me.txtNumber.Location = New System.Drawing.Point(119, 36)
+        Me.txtNumber.Name = "txtNumber"
+        Me.txtNumber.Size = New System.Drawing.Size(76, 20)
+        Me.txtNumber.TabIndex = 2
+        Me.txtNumber.Text = "100"
         '
-        'btnVistaEnhancers
+        'Label3
         '
-        Me.btnVistaEnhancers.Location = New System.Drawing.Point(6, 15)
-        Me.btnVistaEnhancers.Name = "btnVistaEnhancers"
-        Me.btnVistaEnhancers.Size = New System.Drawing.Size(94, 23)
-        Me.btnVistaEnhancers.TabIndex = 0
-        Me.btnVistaEnhancers.Text = "Vista Enhancers"
-        Me.btnVistaEnhancers.UseVisualStyleBackColor = True
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(119, 16)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(51, 13)
+        Me.Label3.TabIndex = 3
+        Me.Label3.Text = "Generate"
         '
-        'btnConvertTable2name
+        'Label4
         '
-        Me.btnConvertTable2name.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnConvertTable2name.Location = New System.Drawing.Point(248, 237)
-        Me.btnConvertTable2name.Name = "btnConvertTable2name"
-        Me.btnConvertTable2name.Size = New System.Drawing.Size(75, 23)
-        Me.btnConvertTable2name.TabIndex = 16
-        Me.btnConvertTable2name.Text = "Table2name"
-        Me.btnConvertTable2name.UseVisualStyleBackColor = True
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(119, 59)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(74, 13)
+        Me.Label4.TabIndex = 4
+        Me.Label4.Text = "random genes"
         '
         'Form1
         '
@@ -449,6 +502,7 @@ Partial Class Form1
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox8.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -486,5 +540,10 @@ Partial Class Form1
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents btnDiseaseOntology As System.Windows.Forms.Button
     Friend WithEvents btnConvertTable2name As System.Windows.Forms.Button
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents txtNumber As System.Windows.Forms.TextBox
+    Friend WithEvents btnRandGene As System.Windows.Forms.Button
+    Friend WithEvents txtMisc As System.Windows.Forms.TextBox
 
 End Class
