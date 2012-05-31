@@ -590,7 +590,7 @@ Public Class Form1
         End If
 
         Dim outputDir As String = fd.SelectedPath
-        OpenDatabase()
+        cn = New MySqlConnection("Server=genome-mysql.cse.ucsc.edu;Database=hg19;User ID=genome;Password=")
        
         Dim tableNames = GetHistoneModTableNames()
         ProgressBar1.Maximum = tableNames.Count
@@ -740,7 +740,7 @@ Public Class Form1
         lblProgress.Text = "Downloading Transcription Factor Data" : lblProgress.Update()
         Dim tranTable As New List(Of TranscriptionFactorRow)
 
-        Using cn = New MySqlConnection(ConnectionString)
+        Using cn = New MySqlConnection("Server=genome-mysql.cse.ucsc.edu;Database=hg19;User ID=genome;Password=")
             cn.Open()
             Using cmd As New MySqlCommand("SELECT chrom,chromStart,chromEnd,name,score,strand,thickStart,thickEnd,reserved,blockCount,blockSizes,chromStarts,expCount,expIds,expScores FROM wgEncodeRegTfbsClustered", cn)
                 cmd.CommandTimeout = 0
