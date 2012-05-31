@@ -56,11 +56,15 @@ Partial Class Form1
         Me.btnClustering = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.txtMisc = New System.Windows.Forms.TextBox()
-        Me.btnRandGene = New System.Windows.Forms.Button()
-        Me.txtNumber = New System.Windows.Forms.TextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.txtNumber = New System.Windows.Forms.TextBox()
+        Me.btnRandGene = New System.Windows.Forms.Button()
+        Me.txtMisc = New System.Windows.Forms.TextBox()
+        Me.btnProcessVCF = New System.Windows.Forms.Button()
+        Me.GroupBox9 = New System.Windows.Forms.GroupBox()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.btnProcessExons = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -69,6 +73,7 @@ Partial Class Form1
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
+        Me.GroupBox9.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnExtractAllGFs
@@ -434,30 +439,14 @@ Partial Class Form1
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Misc"
         '
-        'txtMisc
+        'Label4
         '
-        Me.txtMisc.Location = New System.Drawing.Point(6, 34)
-        Me.txtMisc.Multiline = True
-        Me.txtMisc.Name = "txtMisc"
-        Me.txtMisc.Size = New System.Drawing.Size(107, 253)
-        Me.txtMisc.TabIndex = 0
-        '
-        'btnRandGene
-        '
-        Me.btnRandGene.Location = New System.Drawing.Point(120, 75)
-        Me.btnRandGene.Name = "btnRandGene"
-        Me.btnRandGene.Size = New System.Drawing.Size(75, 23)
-        Me.btnRandGene.TabIndex = 1
-        Me.btnRandGene.Text = "Generate!"
-        Me.btnRandGene.UseVisualStyleBackColor = True
-        '
-        'txtNumber
-        '
-        Me.txtNumber.Location = New System.Drawing.Point(119, 36)
-        Me.txtNumber.Name = "txtNumber"
-        Me.txtNumber.Size = New System.Drawing.Size(76, 20)
-        Me.txtNumber.TabIndex = 2
-        Me.txtNumber.Text = "100"
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(119, 59)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(74, 13)
+        Me.Label4.TabIndex = 4
+        Me.Label4.Text = "random genes"
         '
         'Label3
         '
@@ -468,20 +457,76 @@ Partial Class Form1
         Me.Label3.TabIndex = 3
         Me.Label3.Text = "Generate"
         '
-        'Label4
+        'txtNumber
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(119, 59)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(74, 13)
-        Me.Label4.TabIndex = 4
-        Me.Label4.Text = "random genes"
+        Me.txtNumber.Location = New System.Drawing.Point(119, 36)
+        Me.txtNumber.Name = "txtNumber"
+        Me.txtNumber.Size = New System.Drawing.Size(76, 20)
+        Me.txtNumber.TabIndex = 2
+        Me.txtNumber.Text = "100"
+        '
+        'btnRandGene
+        '
+        Me.btnRandGene.Location = New System.Drawing.Point(120, 75)
+        Me.btnRandGene.Name = "btnRandGene"
+        Me.btnRandGene.Size = New System.Drawing.Size(75, 23)
+        Me.btnRandGene.TabIndex = 1
+        Me.btnRandGene.Text = "Generate!"
+        Me.btnRandGene.UseVisualStyleBackColor = True
+        '
+        'txtMisc
+        '
+        Me.txtMisc.Location = New System.Drawing.Point(6, 34)
+        Me.txtMisc.Multiline = True
+        Me.txtMisc.Name = "txtMisc"
+        Me.txtMisc.Size = New System.Drawing.Size(121, 253)
+        Me.txtMisc.TabIndex = 0
+        '
+        'btnProcessVCF
+        '
+        Me.btnProcessVCF.Location = New System.Drawing.Point(6, 15)
+        Me.btnProcessVCF.Name = "btnProcessVCF"
+        Me.btnProcessVCF.Size = New System.Drawing.Size(121, 23)
+        Me.btnProcessVCF.TabIndex = 20
+        Me.btnProcessVCF.Text = "Process VCF"
+        Me.btnProcessVCF.UseVisualStyleBackColor = True
+        '
+        'GroupBox9
+        '
+        Me.GroupBox9.Controls.Add(Me.btnProcessExons)
+        Me.GroupBox9.Controls.Add(Me.btnProcessVCF)
+        Me.GroupBox9.Location = New System.Drawing.Point(352, 353)
+        Me.GroupBox9.Name = "GroupBox9"
+        Me.GroupBox9.Size = New System.Drawing.Size(137, 195)
+        Me.GroupBox9.TabIndex = 21
+        Me.GroupBox9.TabStop = False
+        Me.GroupBox9.Text = "GroupBox9"
+        '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(0, 0)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 23)
+        Me.Button2.TabIndex = 22
+        Me.Button2.Text = "Button2"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'btnProcessExons
+        '
+        Me.btnProcessExons.Location = New System.Drawing.Point(6, 44)
+        Me.btnProcessExons.Name = "btnProcessExons"
+        Me.btnProcessExons.Size = New System.Drawing.Size(121, 23)
+        Me.btnProcessExons.TabIndex = 23
+        Me.btnProcessExons.Text = "Process exons"
+        Me.btnProcessExons.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(701, 560)
+        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.GroupBox9)
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox4)
@@ -503,6 +548,7 @@ Partial Class Form1
         Me.GroupBox6.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
+        Me.GroupBox9.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -545,5 +591,9 @@ Partial Class Form1
     Friend WithEvents txtNumber As System.Windows.Forms.TextBox
     Friend WithEvents btnRandGene As System.Windows.Forms.Button
     Friend WithEvents txtMisc As System.Windows.Forms.TextBox
+    Friend WithEvents btnProcessVCF As System.Windows.Forms.Button
+    Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnProcessExons As System.Windows.Forms.Button
+    Friend WithEvents Button2 As System.Windows.Forms.Button
 
 End Class

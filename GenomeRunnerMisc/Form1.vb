@@ -526,4 +526,62 @@ Public Class Form1
             txtMisc.Text &= lstGenes(rndGeneID) & vbCrLf
         Next
     End Sub
+
+    Private Sub btnProcessVCF_Click(sender As System.Object, e As System.EventArgs) Handles btnProcessVCF.Click
+        Dim nameArray As String(), numOfIndividuals As Integer, count As Integer
+        Using reader As StreamReader = New StreamReader("F:\WorkOMRF\Data from others\Patrick Gaffney\VCF\all_parsed.txt")
+            nameArray = reader.ReadLine.Split(vbTab) : numOfIndividuals = nameArray.Length - 8
+            While Not reader.EndOfStream
+                Dim lineArray As String()
+                lineArray = reader.ReadLine.Split(vbTab)
+                count += 1
+                Dim chrom As String, chromStart As Integer, chromEnd As Integer
+                chrom = "chr" & lineArray(0) : chromStart = lineArray(1) : chromEnd = chromStart + lineArray(4).Length
+                For i = 8 To 637
+                    Using writer As StreamWriter = New StreamWriter("F:\WorkOMRF\Data from others\Patrick Gaffney\VCF\output\" & nameArray(i) & ".bed", True)
+                        If lineArray(i) <> vbNullString Or lineArray(i) <> "" Then
+                            If lineArray(i) >= 1 Then
+                                writer.WriteLine(chrom & vbTab & chromStart & vbTab & chromEnd)
+                            End If
+                            If lineArray(i) = 2 Then
+                                writer.WriteLine(chrom & vbTab & chromStart & vbTab & chromEnd)
+                            End If
+                        End If
+                    End Using
+                Next
+                Debug.Print("Processing line " & count)
+            End While
+        End Using
+    End Sub
+
+    Private Sub btnProcessExons_Click(sender As System.Object, e As System.EventArgs) Handles btnProcessExons.Click
+        Dim lineArray As String(), count As Integer, strName As String
+        Dim dictionary As New Dictionary(Of String, String)
+        Using reader As StreamReader = New StreamReader("F:\WorkOMRF\Data from others\Patrick Gaffney\VCF\kgXref.txt")
+            lineArray = reader.ReadLine.Split(vbTab)
+            While Not reader.EndOfStream
+                lineArray = reader.ReadLine.Split(vbTab)
+                dictionary.Add(lineArray(0), lineArray(4))
+                count += 1
+                Debug.Print("Processing" & count)
+            End While
+        End Using
+        count = 0
+        Using reader As StreamReader = New StreamReader("F:\WorkOMRF\Data from others\Patrick Gaffney\VCF\exons.bed")
+            Using writer As StreamWriter = New StreamWriter("F:\WorkOMRF\Data from others\Patrick Gaffney\VCF\exons2genes.bed")
+                While Not reader.EndOfStream
+                    count += 1
+                    lineArray = reader.ReadLine.Split(vbTab)
+                    strName = lineArray(3).Split("_")(0)
+                    If dictionary.ContainsKey(strName) Then
+                        lineArray(3) = dictionary.Item(strName)
+                    Else
+                        Debug.Print("Orphan: " & strName)
+                    End If
+                    writer.WriteLine(String.Join(vbTab, lineArray))
+                    Debug.Print("Now exon " & count)
+                End While
+            End Using
+        End Using
+    End Sub
 End Class
