@@ -66,8 +66,10 @@ Partial Class Form1
         Me.btnProcessExons = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox10 = New System.Windows.Forms.GroupBox()
+        Me.btnTranscriptionExport = New System.Windows.Forms.Button()
         Me.btnHistoneModExtraction = New System.Windows.Forms.Button()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.lblProgress = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -526,6 +528,7 @@ Partial Class Form1
         '
         'GroupBox10
         '
+        Me.GroupBox10.Controls.Add(Me.btnTranscriptionExport)
         Me.GroupBox10.Controls.Add(Me.btnHistoneModExtraction)
         Me.GroupBox10.Location = New System.Drawing.Point(490, 353)
         Me.GroupBox10.Name = "GroupBox10"
@@ -533,6 +536,15 @@ Partial Class Form1
         Me.GroupBox10.TabIndex = 23
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "UCSC Data Extraction"
+        '
+        'btnTranscriptionExport
+        '
+        Me.btnTranscriptionExport.Location = New System.Drawing.Point(5, 48)
+        Me.btnTranscriptionExport.Name = "btnTranscriptionExport"
+        Me.btnTranscriptionExport.Size = New System.Drawing.Size(178, 23)
+        Me.btnTranscriptionExport.TabIndex = 1
+        Me.btnTranscriptionExport.Text = "Transcription Factor Export"
+        Me.btnTranscriptionExport.UseVisualStyleBackColor = True
         '
         'btnHistoneModExtraction
         '
@@ -550,11 +562,20 @@ Partial Class Form1
         Me.ProgressBar1.Size = New System.Drawing.Size(200, 23)
         Me.ProgressBar1.TabIndex = 24
         '
+        'lblProgress
+        '
+        Me.lblProgress.AutoSize = True
+        Me.lblProgress.Location = New System.Drawing.Point(501, 506)
+        Me.lblProgress.Name = "lblProgress"
+        Me.lblProgress.Size = New System.Drawing.Size(0, 13)
+        Me.lblProgress.TabIndex = 25
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(701, 560)
+        Me.Controls.Add(Me.lblProgress)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.GroupBox10)
         Me.Controls.Add(Me.Button2)
@@ -583,6 +604,7 @@ Partial Class Form1
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox10.ResumeLayout(False)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents btnExtractAllGFs As System.Windows.Forms.Button
@@ -631,5 +653,7 @@ Partial Class Form1
     Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
     Friend WithEvents btnHistoneModExtraction As System.Windows.Forms.Button
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents btnTranscriptionExport As System.Windows.Forms.Button
+    Friend WithEvents lblProgress As System.Windows.Forms.Label
 
 End Class

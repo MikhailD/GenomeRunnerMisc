@@ -601,8 +601,10 @@ Public Class Form1
             If histoneTableData.marker Is Nothing Then
                 Continue For
             End If
-            Dim outputCelllineMarkerFilePath As String = Path.Combine(outputDir, histoneTableData.cellLine & "_" & histoneTableData.marker & "_" & table & ".bed")
-            Dim outputMarkerCelllineFilePath As String = Path.Combine(outputDir, histoneTableData.marker & "_" & histoneTableData.cellLine & "_" & table & ".bed")
+            'Dim outputCelllineMarkerFilePath As String = Path.Combine(outputDir, histoneTableData.cellLine & "_" & histoneTableData.marker & "_" & table & ".bed")
+            'Dim outputMarkerCelllineFilePath As String = Path.Combine(outputDir, histoneTableData.marker & "_" & histoneTableData.cellLine & "_" & table & ".bed")
+            Dim outputCelllineMarkerFilePath As String = Path.Combine(outputDir, "CM_" & histoneTableData.cellLine & "_" & histoneTableData.marker & ".bed")
+            Dim outputMarkerCelllineFilePath As String = Path.Combine(outputDir, "MC_" & histoneTableData.marker & "_" & histoneTableData.cellLine & ".bed")
 
             Using sw As New StreamWriter(outputCelllineMarkerFilePath, False)
                 Using cmd As New MySqlCommand(query, cn)
@@ -725,4 +727,124 @@ Public Class Form1
         Public marker As String
         Public cellLine As String
     End Structure
+
+    Private Sub btnTranscriptionExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTranscriptionExport.Click
+        Dim fd As New FolderBrowserDialog()
+        fd.ShowDialog()
+        If fd.SelectedPath = Nothing Then
+            Exit Sub
+        End If
+
+        Dim outputDir As String = fd.SelectedPath
+        OpenDatabase()
+        lblProgress.Text = "Downloading Transcription Factor Data" : lblProgress.Update()
+        Dim tranTable As New List(Of TranscriptionFactorRow)
+
+        Using cn = New MySqlConnection(ConnectionString)
+            cn.Open()
+            Using cmd As New MySqlCommand("SELECT chrom,chromStart,chromEnd,name,score,strand,thickStart,thickEnd,reserved,blockCount,blockSizes,chromStarts,expCount,expIds,expScores FROM wgEncodeRegTfbsClustered", cn)
+                cmd.CommandTimeout = 0
+                Using dr As MySqlDataReader = cmd.ExecuteReader()
+                    While dr.Read()
+                        Dim tranRow As New TranscriptionFactorRow
+                        tranRow.chrom = dr("chrom")
+                        tranRow.chromStart = dr("chromStart")
+                        tranRow.chromEnd = dr("chromEnd")
+                        tranRow.name = dr("name")
+                        tranRow.score = dr("score")
+                        tranRow.strand = dr("strand")
+                        tranRow.thickStart = dr("thickStart")
+                        tranRow.thickEnd = dr("thickEnd")
+                        tranRow.reserved = dr("reserved")
+                        tranRow.blockCount = dr("blockCount")
+                        tranRow.blockSizes = System.Text.Encoding.UTF8.GetString(dr("blockSizes"))
+                        tranRow.expCount = dr("expCount")
+                        tranRow.chromStarts = System.Text.Encoding.UTF8.GetString(dr("chromStarts"))
+                        tranRow.expIds = System.Text.Encoding.UTF8.GetString(dr("expIds"))
+                        tranRow.expScores = System.Text.Encoding.UTF8.GetString(dr("expScores"))
+                        tranTable.Add(tranRow)
+                    End While
+                End Using
+            End Using
+        End Using
+
+        ' Exports the TFBS into seperate .bed files based on name
+        Dim uniqueNames As New List(Of String)
+        For Each row In tranTable
+            If uniqueNames.IndexOf(row.name) = -1 Then
+                uniqueNames.Add(row.name)
+            End If
+        Next
+        ProgressBar1.Value = 0
+        ProgressBar1.Maximum = uniqueNames.Count
+        lblProgress.Text = "Outputing TFBS data by name" : lblProgress.Update()
+        For Each uName In uniqueNames
+            Using sw As New StreamWriter(Path.Combine(outputDir, "TFBS_" & uName & ".bed"))
+                Dim curName As String = uName
+                For Each curRow In tranTable
+                    If (curRow.name = curName) Then
+                        sw.WriteLine(curRow.chrom & vbTab & curRow.chromStart & vbTab & curRow.chromEnd & vbTab & curRow.name & vbTab & curRow.score & vbTab & curRow.strand _
+                                     & vbTab & curRow.thickStart & vbTab & curRow.thickEnd & vbTab & curRow.reserved & vbTab & curRow.blockCount & vbTab & curRow.blockSizes _
+                                     & vbTab & curRow.chromStarts & vbTab & curRow.expCount & vbTab & curRow.expIds & vbTab & curRow.expScores)
+                    End If
+                Next
+            End Using
+            ProgressBar1.Value += 1 : ProgressBar1.Update()
+        Next
+
+        For Each tranRow In tranTable
+            tranRow.listExpScore = tranRow.expScores.Split(",")                         'a list of the experiment scores that will be used in the second part of the program
+            'to free up memory
+            tranRow.expScores = Nothing
+            tranRow.expIds = Nothing
+            tranRow.reserved = Nothing
+            tranRow.score = Nothing
+        Next
+
+        'exports TFBS into seperate bed files based on name AND experimental id
+        ProgressBar1.Value = 0
+        lblProgress.Text = "Outputing TFBS data by name" : lblProgress.Update()
+        Dim TFBSexperimentNames As New List(Of String)(New String() {"H1-hESC", "A549+DEX_100nM", "A549+EtOH_0.02pct", "A549+DEX_50nM", "A549+DEX_5nM", "A549+DEX_500pM", "AG04449", "AG09309", "AG09319", "AG10803", "AoAF", "BJ", "Caco-2", "ECC-1+Estradiol_10nM", "ECC-1+Genistein_100nM", "ECC-1+DMSO_0.02pct", "ECC-1+DEX_100nM", "Fibrobl", "GM12878", "GM12891", "GM12892", "Gliobla", "GM10847", "GM12878+TNFa", "GM15510", "GM18505", "GM18526", "GM18951", "GM19099", "GM19193", "GM06990", "GM12864", "GM12865", "GM12872", "GM12873", "GM12874", "GM12875", "HeLa-S3", "HMEC", "HSMM", "HSMMtube", "HCT-116", "HTB-11", "HEK293(b)", "HeLa-S3+IFNg30", "HBMEC", "HCPEpiC", "HEEpiC", "HEK293", "HMF", "HPAF", "HPF", "HRE", "K562", "K562+IFNa6h", "K562+IFNg30", "K562+IFNg6h", "K562+IFNa30", "K562b", "K562b+MNaseD", "HepG2", "HepG2+forskolin", "HepG2+insulin", "HepG2+pravastatin", "HepG2b", "MCF-7+estrogen", "MCF-7+vehicle", "MCF-7", "MCF10A-Er-Src+EtOH_0.01pct", "MCF10A-Er-Src+TAM_1uM_36hr", "MCF10A-Er-Src+EtOH_0.01pct_4hr", "MCF10A-Er-Src+EtOH_0.01pct_12hr", "NH-A", "NHDF-Ad", "NHEK", "NHLF", "NB4", "NT2-D1", "Osteobl", "PANC-1", "PFSK-1", "ProgFib", "PBDE", "Raji", "SK-N-SH_RA", "SH-SY5Y", "SAEC", "T-47D+DMSO_0.02pct", "T-47D+Genistein_100nM", "T-47D+Estradiol_10nM", "T-REx-HEK293", "HUVEC", "U2OS", "WERI-Rb-1", "U87"})
+        For Each uName In uniqueNames
+            For i As Integer = 0 To TFBSexperimentNames.Count - 1 Step +1
+                Dim outputPath As String = Path.Combine(outputDir, "E_" & uName & "_" & i & "_" & TFBSexperimentNames(i) & ".bed")
+                Dim containsEntry = False
+                Using sw As New StreamWriter(outputPath)
+                    For Each curRow In tranTable
+                        If curRow.listExpScore(i) <> 0 Then
+                            sw.WriteLine(curRow.chrom & vbTab & curRow.chromStart & vbTab & curRow.chromEnd)
+                            containsEntry = True
+                        End If
+                    Next
+                End Using
+                'deletes the bed file if there are no hits
+                If containsEntry = False Then
+                    File.Delete(outputPath)
+                End If
+            Next
+            ProgressBar1.Value += 1 : ProgressBar1.Update()
+
+        Next
+        ProgressBar1.Value = 0
+        MessageBox.Show("TFBS outputed to by name and score to " & outputDir)
+    End Sub
+End Class
+
+Public Class TranscriptionFactorRow
+    Public chrom As String
+    Public chromStart As Integer
+    Public chromEnd As Integer
+    Public name As String
+    Public score As Integer
+    Public strand As String
+    Public thickStart As Integer
+    Public thickEnd As Integer
+    Public reserved As Integer
+    Public blockCount As Integer
+    Public blockSizes As String
+    Public chromStarts As String
+    Public expCount As String
+    Public expIds As String
+    Public expScores As String
+    Public listExpScore As String()
 End Class
