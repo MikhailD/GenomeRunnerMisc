@@ -47,10 +47,7 @@ Public Class Form1
         While ConnectionWorks = False
             Try
                 cn = New MySqlConnection(ConnectionString) : cn.Open()
-                cmd = New MySqlCommand("select table_name from information_schema.tables limit 1;", cn)
-                dr = cmd.ExecuteReader()
                 ConnectionWorks = True
-                dr.Close()
             Catch
                 frmLogin.ShowDialog()
                 ConnectionString = GetConnectionSettings(uName, uPassword, uServer, uDatabase)
@@ -586,32 +583,146 @@ Public Class Form1
     End Sub
 
     Private Sub btnHistoneModExtraction_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnHistoneModExtraction.Click
-        Dim OuputDir As String = "C:\Users\wrenlab\Documents\Test"
-        GetHistoneModTableNames()
+        Dim fd As New FolderBrowserDialog()
+        fd.ShowDialog()
+        If fd.SelectedPath = Nothing Then
+            Exit Sub
+        End If
+
+        Dim outputDir As String = fd.SelectedPath
         OpenDatabase()
-        Dim tr As MySqlTransaction
-        tr = cn.BeginTransaction()
-        Using cmd As New MySqlCommand("SELECT "
+       
+        Dim tableNames = GetHistoneModTableNames()
+        ProgressBar1.Maximum = tableNames.Count
+        For Each table In tableNames
+            If cn.State = ConnectionState.Closed Then : cn.Open() : End If
+            Dim query = CreateHistoneQuery(table)
+            Dim histoneTableData = GetHistoneTableInfo(table)
+            If histoneTableData.marker Is Nothing Then
+                Continue For
+            End If
+            Dim outputCelllineMarkerFilePath As String = Path.Combine(outputDir, histoneTableData.cellLine & "_" & histoneTableData.marker & "_" & table & ".bed")
+            Dim outputMarkerCelllineFilePath As String = Path.Combine(outputDir, histoneTableData.marker & "_" & histoneTableData.cellLine & "_" & table & ".bed")
+
+            Using sw As New StreamWriter(outputCelllineMarkerFilePath, False)
+                Using cmd As New MySqlCommand(query, cn)
+                    Using dr = cmd.ExecuteReader()
+                        While dr.Read()
+                            Dim line As String = dr("chrom") & vbTab & dr("chromStart") & vbTab & dr("chromEnd")
+                            If dr.GetOrdinal("name") <> -1 Then
+                                line &= vbTab & dr("name")
+                            End If
+                            If dr.GetOrdinal("score") <> -1 Then
+                                line &= vbTab & dr("score")
+                            End If
+                            If dr.GetOrdinal("strand") <> -1 Then
+                                line &= vbTab & dr("strand")
+                            End If
+                            sw.WriteLine(line)
+                        End While
+                    End Using
+                End Using
+            End Using
+
+            File.Copy(outputCelllineMarkerFilePath, outputMarkerCelllineFilePath, True)
+            Debug.WriteLine("Wrote .bed file for " & table)
+            ProgressBar1.Value = ProgressBar1.Value + 1
+            ProgressBar1.Update()
+        Next
+        MessageBox.Show(".bed file generated and saved to " & outputDir)
+        ProgressBar1.Value = 0
+        If cn.State = ConnectionState.Open Then : cn.Close() : End If
 
     End Sub
 
-    'downloads a text file from the UCSC server that contains names of the modification table.  Formats this text file and only outputs those table names that 
-    'are for peak views and not signal
-    Private Sub GetHistoneModTableNames()
-        Dim outPath As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Histone_TableNames_notFormated.txt")
-        Dim outPathFormatedTableNames As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Histone_TableNames.txt")
-        My.Computer.Network.DownloadFile("http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/md5sum.txt", outPath)
-        Using sr As New StreamReader(outPath)
-            Using sw As New StreamWriter(outPathFormatedTableNames)
-                While sr.EndOfStream <> True
-                    Dim line As String = sr.ReadLine
-                    If line.Contains("Peak") Then
-                        Dim indexOfFirstPeriod As Integer = line.IndexOf(".")
-                        line = line.Remove(indexOfFirstPeriod)
-                        sw.WriteLine(line)
-                    End If
+    'create a query based on which columns are available 
+    Private Function CreateHistoneQuery(ByVal tableName As String) As String
+        Dim query As String = "SELECT chrom,chromStart,chromEnd "
+        Dim columnNames = GetColumnNames(tableName)
+        If columnNames.Contains("name") Then
+            query &= ",name"
+        End If
+        If columnNames.Contains("score") Then
+            query &= ",score"
+        End If
+        If columnNames.Contains("strand") Then
+            query &= ",strand"
+        End If
+        query &= " FROM " & tableName
+        Return query
+    End Function
+
+    ' gets the marker type and cell line of the table from the UCSC database
+    Private Function GetHistoneTableInfo(ByVal TableName As String) As HistoneTableData
+        Dim hist As New HistoneTableData
+        Dim dr1 As MySqlDataReader
+        Dim cn1 As New MySqlConnection(ConnectionString)
+        cn1.Open()
+        Using cmd1 As New MySqlCommand("SELECT shortLabel FROM trackDb where tableName='" & TableName & "';", cn1)
+            Try
+                cmd1.Parameters.AddWithValue("@tableName", TableName)
+                dr1 = cmd1.ExecuteReader()
+                dr1.Read()
+                Dim histNamingData = dr1(0).ToString().Split(" ")
+                hist.tableName = TableName
+                hist.cellLine = histNamingData(0)
+                hist.marker = histNamingData(1)
+                dr1.Close()
+            Catch
+                Debug.WriteLine("Table does not exist in database: " & TableName)
+                hist.cellLine = Nothing
+                hist.marker = Nothing
+                hist.tableName = Nothing
+            End Try
+
+        End Using
+
+        Return hist
+    End Function
+
+    Private Function GetColumnNames(ByVal TableName As String) As List(Of String)
+        Dim columnNames As New List(Of String)
+        Dim dr1 As MySqlDataReader
+        Dim cn1 As New MySqlConnection(ConnectionString)
+        cn1.Open()
+        Using cmd1 As New MySqlCommand("SHOW COLUMNS FROM " & TableName, cn1)
+            Using dr = cmd1.ExecuteReader()
+                While dr.Read()
+                    columnNames.Add(dr(0))
                 End While
             End Using
         End Using
-    End Sub
+        Return columnNames
+    End Function
+
+   
+
+
+    'downloads a text file from the UCSC server that contains names of the modification table.  Formats this text file and only outputs those table names that 
+    'are for peak views and not signal
+    Private Function GetHistoneModTableNames() As List(Of String)
+        Dim tableNames As New List(Of String)
+        Dim outPath As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Histone_TableNames_notFormated.txt")
+        If File.Exists(outPath) Then
+            File.Delete(outPath)
+        End If
+        My.Computer.Network.DownloadFile("http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/md5sum.txt", outPath)
+        Using sr As New StreamReader(outPath)
+            While sr.EndOfStream <> True
+                Dim line As String = sr.ReadLine
+                If line.Contains("Peak") Then
+                    Dim indexOfFirstPeriod As Integer = line.IndexOf(".")
+                    Dim tableName As String = line.Remove(indexOfFirstPeriod)
+                    tableNames.Add(tableName)
+                End If
+            End While
+        End Using
+        Return tableNames
+    End Function
+
+    Structure HistoneTableData
+        Public tableName As String
+        Public marker As String
+        Public cellLine As String
+    End Structure
 End Class

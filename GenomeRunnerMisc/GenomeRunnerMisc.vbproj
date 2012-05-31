@@ -50,7 +50,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="alglibnet2">
-      <HintPath>..\..\alglib-3.2.0.vbnet\vbnet\alglibnet2.dll</HintPath>
+      <HintPath>\\atlas\wrenlab\Code\alglib-3.2.0.vbnet\vbnet\alglibnet2.dll</HintPath>
     </Reference>
     <Reference Include="Interop.MLApp">
       <HintPath>.\Interop.MLApp.dll</HintPath>

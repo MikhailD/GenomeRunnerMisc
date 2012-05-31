@@ -42,7 +42,11 @@ Partial Class frmLogin
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtServer = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btnUCSC = New System.Windows.Forms.Button()
+        Me.btnRemoteDatabase = New System.Windows.Forms.Button()
         CType(Me.LogoPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'LogoPictureBox
@@ -136,13 +140,43 @@ Partial Class frmLogin
         Me.Label2.Text = "&Server"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'LoginForm1
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnRemoteDatabase)
+        Me.GroupBox1.Controls.Add(Me.btnUCSC)
+        Me.GroupBox1.Location = New System.Drawing.Point(402, 26)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(121, 89)
+        Me.GroupBox1.TabIndex = 9
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Load Defaults For"
+        '
+        'btnUCSC
+        '
+        Me.btnUCSC.Location = New System.Drawing.Point(6, 23)
+        Me.btnUCSC.Name = "btnUCSC"
+        Me.btnUCSC.Size = New System.Drawing.Size(108, 23)
+        Me.btnUCSC.TabIndex = 0
+        Me.btnUCSC.Text = "UCSC"
+        Me.btnUCSC.UseVisualStyleBackColor = True
+        '
+        'btnRemoteDatabase
+        '
+        Me.btnRemoteDatabase.Location = New System.Drawing.Point(7, 52)
+        Me.btnRemoteDatabase.Name = "btnRemoteDatabase"
+        Me.btnRemoteDatabase.Size = New System.Drawing.Size(108, 23)
+        Me.btnRemoteDatabase.TabIndex = 2
+        Me.btnRemoteDatabase.Text = "Remote Database"
+        Me.btnRemoteDatabase.UseVisualStyleBackColor = True
+        '
+        'frmLogin
         '
         Me.AcceptButton = Me.OK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel
-        Me.ClientSize = New System.Drawing.Size(403, 211)
+        Me.ClientSize = New System.Drawing.Size(535, 211)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.txtServer)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.txtDatabase)
@@ -157,11 +191,12 @@ Partial Class frmLogin
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "LoginForm1"
+        Me.Name = "frmLogin"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Local database login"
         CType(Me.LogoPictureBox, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -170,5 +205,8 @@ Partial Class frmLogin
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents txtServer As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnRemoteDatabase As System.Windows.Forms.Button
+    Friend WithEvents btnUCSC As System.Windows.Forms.Button
 
 End Class

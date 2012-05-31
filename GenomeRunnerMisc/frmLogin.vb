@@ -10,15 +10,16 @@ Public Class frmLogin
     ' such as the username, display name, etc.
 
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
-        If txtUsername.Text <> vbNullString And txtPassword.Text <> vbNullString Then
+        Dim response As MsgBoxResult = MessageBox.Show("Save as default connection settings?", "Save Settings", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        If response = MsgBoxResult.Yes Then
             SaveSetting("GenomeRunnerMisc", "Database", "uName", txtUsername.Text)
             SaveSetting("GenomeRunnerMisc", "Database", "uPassword", txtPassword.Text)
             SaveSetting("GenomeRunnerMisc", "Database", "uServer", txtServer.Text)
             SaveSetting("GenomeRunnerMisc", "Database", "uDatabase", txtDatabase.Text)
+            With Form1
+                .lblHost.Text = txtServer.Text : .lblDB.Text = txtDatabase.Text : .lblUser.Text = txtUsername.Text
+            End With
         End If
-        With Form1
-            .lblHost.Text = txtServer.Text : .lblDB.Text = txtDatabase.Text : .lblUser.Text = txtUsername.Text
-        End With
         Me.Close()
     End Sub
 
@@ -27,9 +28,21 @@ Public Class frmLogin
     End Sub
 
     Private Sub LoginForm1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+       
+    End Sub
+
+    Private Sub btnUCSC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUCSC.Click
+        txtUsername.Text = "genome"
+        txtPassword.Text = ""
+        txtServer.Text = "genome-mysql.cse.ucsc.edu"
+        txtDatabase.Text = "hg19"
+    End Sub
+   
+
+    Private Sub btnRemoteDatabase_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoteDatabase.Click
         txtUsername.Text = "genomerunner"
         txtPassword.Text = "genomerunner"
         txtServer.Text = "156.110.144.34"
-        txtDatabase.Text = "hg18test"
+        txtDatabase.Text = "hg19"
     End Sub
 End Class

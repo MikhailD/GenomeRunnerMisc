@@ -67,6 +67,7 @@ Partial Class Form1
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox10 = New System.Windows.Forms.GroupBox()
         Me.btnHistoneModExtraction = New System.Windows.Forms.Button()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -542,11 +543,19 @@ Partial Class Form1
         Me.btnHistoneModExtraction.Text = "Histone Modification Extraction"
         Me.btnHistoneModExtraction.UseVisualStyleBackColor = True
         '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(496, 525)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(200, 23)
+        Me.ProgressBar1.TabIndex = 24
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(701, 560)
+        Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.GroupBox10)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.GroupBox9)
@@ -621,5 +630,6 @@ Partial Class Form1
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
     Friend WithEvents btnHistoneModExtraction As System.Windows.Forms.Button
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
 
 End Class
