@@ -63,8 +63,10 @@ Partial Class Form1
         Me.txtMisc = New System.Windows.Forms.TextBox()
         Me.btnProcessVCF = New System.Windows.Forms.Button()
         Me.GroupBox9 = New System.Windows.Forms.GroupBox()
-        Me.Button2 = New System.Windows.Forms.Button()
         Me.btnProcessExons = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.GroupBox10 = New System.Windows.Forms.GroupBox()
+        Me.btnHistoneModExtraction = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -74,6 +76,7 @@ Partial Class Form1
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
+        Me.GroupBox10.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnExtractAllGFs
@@ -502,15 +505,6 @@ Partial Class Form1
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "GroupBox9"
         '
-        'Button2
-        '
-        Me.Button2.Location = New System.Drawing.Point(0, 0)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 23)
-        Me.Button2.TabIndex = 22
-        Me.Button2.Text = "Button2"
-        Me.Button2.UseVisualStyleBackColor = True
-        '
         'btnProcessExons
         '
         Me.btnProcessExons.Location = New System.Drawing.Point(6, 44)
@@ -520,11 +514,40 @@ Partial Class Form1
         Me.btnProcessExons.Text = "Process exons"
         Me.btnProcessExons.UseVisualStyleBackColor = True
         '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(0, 0)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 23)
+        Me.Button2.TabIndex = 22
+        Me.Button2.Text = "Button2"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'GroupBox10
+        '
+        Me.GroupBox10.Controls.Add(Me.btnHistoneModExtraction)
+        Me.GroupBox10.Location = New System.Drawing.Point(490, 353)
+        Me.GroupBox10.Name = "GroupBox10"
+        Me.GroupBox10.Size = New System.Drawing.Size(189, 84)
+        Me.GroupBox10.TabIndex = 23
+        Me.GroupBox10.TabStop = False
+        Me.GroupBox10.Text = "UCSC Data Extraction"
+        '
+        'btnHistoneModExtraction
+        '
+        Me.btnHistoneModExtraction.Location = New System.Drawing.Point(5, 19)
+        Me.btnHistoneModExtraction.Name = "btnHistoneModExtraction"
+        Me.btnHistoneModExtraction.Size = New System.Drawing.Size(178, 23)
+        Me.btnHistoneModExtraction.TabIndex = 0
+        Me.btnHistoneModExtraction.Text = "Histone Modification Extraction"
+        Me.btnHistoneModExtraction.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(701, 560)
+        Me.Controls.Add(Me.GroupBox10)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.GroupBox9)
         Me.Controls.Add(Me.GroupBox8)
@@ -549,6 +572,7 @@ Partial Class Form1
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
         Me.GroupBox9.ResumeLayout(False)
+        Me.GroupBox10.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -595,5 +619,7 @@ Partial Class Form1
     Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox
     Friend WithEvents btnProcessExons As System.Windows.Forms.Button
     Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnHistoneModExtraction As System.Windows.Forms.Button
 
 End Class

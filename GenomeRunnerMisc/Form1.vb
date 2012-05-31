@@ -584,4 +584,34 @@ Public Class Form1
             End Using
         End Using
     End Sub
+
+    Private Sub btnHistoneModExtraction_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnHistoneModExtraction.Click
+        Dim OuputDir As String = "C:\Users\wrenlab\Documents\Test"
+        GetHistoneModTableNames()
+        OpenDatabase()
+        Dim tr As MySqlTransaction
+        tr = cn.BeginTransaction()
+        Using cmd As New MySqlCommand("SELECT "
+
+    End Sub
+
+    'downloads a text file from the UCSC server that contains names of the modification table.  Formats this text file and only outputs those table names that 
+    'are for peak views and not signal
+    Private Sub GetHistoneModTableNames()
+        Dim outPath As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Histone_TableNames_notFormated.txt")
+        Dim outPathFormatedTableNames As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Histone_TableNames.txt")
+        My.Computer.Network.DownloadFile("http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/md5sum.txt", outPath)
+        Using sr As New StreamReader(outPath)
+            Using sw As New StreamWriter(outPathFormatedTableNames)
+                While sr.EndOfStream <> True
+                    Dim line As String = sr.ReadLine
+                    If line.Contains("Peak") Then
+                        Dim indexOfFirstPeriod As Integer = line.IndexOf(".")
+                        line = line.Remove(indexOfFirstPeriod)
+                        sw.WriteLine(line)
+                    End If
+                End While
+            End Using
+        End Using
+    End Sub
 End Class
