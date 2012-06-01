@@ -590,7 +590,7 @@ Public Class Form1
         End If
 
         Dim outputDir As String = fd.SelectedPath
-        OpenDatabase()
+        cn = New MySqlConnection("Server=genome-mysql.cse.ucsc.edu;Database=hg19;User ID=genome;Password=")
        
         Dim tableNames = GetHistoneModTableNames()
         ProgressBar1.Maximum = tableNames.Count
@@ -736,13 +736,13 @@ Public Class Form1
         End If
 
         Dim outputDir As String = fd.SelectedPath
-        OpenDatabase()
+
         lblProgress.Text = "Downloading Transcription Factor Data" : lblProgress.Update()
         Dim tranTable As New List(Of TranscriptionFactorRow)
-
-        Using cn = New MySqlConnection(ConnectionString)
+        If cn.State = ConnectionState.Open Then : cn.Close() : End If
+        Using cn = New MySqlConnection("Server=genome-mysql.cse.ucsc.edu;Database=hg19;User ID=genome")
             cn.Open()
-            Using cmd As New MySqlCommand("SELECT chrom,chromStart,chromEnd,name,score,strand,thickStart,thickEnd,reserved,blockCount,blockSizes,chromStarts,expCount,expIds,expScores FROM wgEncodeRegTfbsClustered", cn)
+            Using cmd As New MySqlCommand("SELECT chrom,chromStart,chromEnd,name,score,strand,thickStart,thickEnd,reserved,blockCount,blockSizes,chromStarts,expCount,expIds,expScores FROM wgEncodeRegTfbsClustered limit 1000", cn)
                 cmd.CommandTimeout = 0
                 Using dr As MySqlDataReader = cmd.ExecuteReader()
                     While dr.Read()
@@ -784,14 +784,17 @@ Public Class Form1
                 For Each curRow In tranTable
                     If (curRow.name = curName) Then
                         sw.WriteLine(curRow.chrom & vbTab & curRow.chromStart & vbTab & curRow.chromEnd & vbTab & curRow.name & vbTab & curRow.score & vbTab & curRow.strand _
-                                     & vbTab & curRow.thickStart & vbTab & curRow.thickEnd & vbTab & curRow.reserved & vbTab & curRow.blockCount & vbTab & curRow.blockSizes _
-                                     & vbTab & curRow.chromStarts & vbTab & curRow.expCount & vbTab & curRow.expIds & vbTab & curRow.expScores)
+                            & vbTab & curRow.thickStart & vbTab & curRow.thickEnd & vbTab & curRow.reserved & vbTab & curRow.blockCount & vbTab & curRow.blockSizes _
+                           & vbTab & curRow.chromStarts & vbTab & curRow.expCount & vbTab & curRow.expIds & vbTab & curRow.expScores)
+                        'Debug.Print(curRow.chrom & vbTab & curRow.chromStart & vbTab & curRow.chromEnd & vbTab & curRow.name & vbTab & curRow.score & vbTab & curRow.strand _
+                        '             & vbTab & curRow.thickStart & vbTab & curRow.thickEnd & vbTab & curRow.reserved & vbTab & curRow.blockCount & vbTab & curRow.blockSizes _
+                        '                & vbTab & curRow.chromStarts & vbTab & curRow.expCount & vbTab & curRow.expIds & vbTab & curRow.expScores)
                     End If
                 Next
             End Using
             ProgressBar1.Value += 1 : ProgressBar1.Update()
         Next
-
+        Debug.Print("########################################")
         For Each tranRow In tranTable
             tranRow.listExpScore = tranRow.expScores.Split(",")                         'a list of the experiment scores that will be used in the second part of the program
             'to free up memory
@@ -806,13 +809,23 @@ Public Class Form1
         lblProgress.Text = "Outputing TFBS data by name" : lblProgress.Update()
         Dim TFBSexperimentNames As New List(Of String)(New String() {"H1-hESC", "A549+DEX_100nM", "A549+EtOH_0.02pct", "A549+DEX_50nM", "A549+DEX_5nM", "A549+DEX_500pM", "AG04449", "AG09309", "AG09319", "AG10803", "AoAF", "BJ", "Caco-2", "ECC-1+Estradiol_10nM", "ECC-1+Genistein_100nM", "ECC-1+DMSO_0.02pct", "ECC-1+DEX_100nM", "Fibrobl", "GM12878", "GM12891", "GM12892", "Gliobla", "GM10847", "GM12878+TNFa", "GM15510", "GM18505", "GM18526", "GM18951", "GM19099", "GM19193", "GM06990", "GM12864", "GM12865", "GM12872", "GM12873", "GM12874", "GM12875", "HeLa-S3", "HMEC", "HSMM", "HSMMtube", "HCT-116", "HTB-11", "HEK293(b)", "HeLa-S3+IFNg30", "HBMEC", "HCPEpiC", "HEEpiC", "HEK293", "HMF", "HPAF", "HPF", "HRE", "K562", "K562+IFNa6h", "K562+IFNg30", "K562+IFNg6h", "K562+IFNa30", "K562b", "K562b+MNaseD", "HepG2", "HepG2+forskolin", "HepG2+insulin", "HepG2+pravastatin", "HepG2b", "MCF-7+estrogen", "MCF-7+vehicle", "MCF-7", "MCF10A-Er-Src+EtOH_0.01pct", "MCF10A-Er-Src+TAM_1uM_36hr", "MCF10A-Er-Src+EtOH_0.01pct_4hr", "MCF10A-Er-Src+EtOH_0.01pct_12hr", "NH-A", "NHDF-Ad", "NHEK", "NHLF", "NB4", "NT2-D1", "Osteobl", "PANC-1", "PFSK-1", "ProgFib", "PBDE", "Raji", "SK-N-SH_RA", "SH-SY5Y", "SAEC", "T-47D+DMSO_0.02pct", "T-47D+Genistein_100nM", "T-47D+Estradiol_10nM", "T-REx-HEK293", "HUVEC", "U2OS", "WERI-Rb-1", "U87"})
         For Each uName In uniqueNames
+            'gets the rows that match the current name field
+            Dim tranByName As New List(Of TranscriptionFactorRow)
+            For Each curRow In tranTable
+                If curRow.name = uName Then
+                    tranByName.Add(curRow)
+                End If
+            Next
+
             For i As Integer = 0 To TFBSexperimentNames.Count - 1 Step +1
                 Dim outputPath As String = Path.Combine(outputDir, "E_" & uName & "_" & i & "_" & TFBSexperimentNames(i) & ".bed")
+                Dim fileName As String = Path.GetFileName(outputPath)
                 Dim containsEntry = False
                 Using sw As New StreamWriter(outputPath)
-                    For Each curRow In tranTable
-                        If curRow.listExpScore(i) <> 0 Then
+                    For Each curRow In tranByName
+                        If curRow.listExpScore(i) <> 0 And curRow.name = uName Then
                             sw.WriteLine(curRow.chrom & vbTab & curRow.chromStart & vbTab & curRow.chromEnd)
+                            Debug.Print(fileName & vbTab & curRow.name & vbTab & curRow.chrom & vbTab & curRow.chromStart & vbTab & curRow.chromEnd)
                             containsEntry = True
                         End If
                     Next
