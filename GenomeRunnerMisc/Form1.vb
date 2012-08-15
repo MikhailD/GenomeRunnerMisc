@@ -13,6 +13,21 @@ Public Class Form1
         Public Tier As Integer
     End Class
 
+    Public Structure FLASHWINFO
+        Public cbSize As Int32
+        Public hwnd As IntPtr
+        Public dwFlags As Int32
+        Public uCount As Int32
+        Public dwTimeout As Int32
+    End Structure
+
+    Private Declare Function FlashWindowEx Lib "user32.dll" (ByRef pfwi As FLASHWINFO) As Int32
+    Private Const FLASHW_CAPTION As Int32 = &H1
+    Private Const FLASHW_TRAY As Int32 = &H2
+    Private Const FLASHW_TIMERNOFG As Int32 = 12
+    Private Const FLASHW_ALL As Int32 = (FLASHW_CAPTION Or FLASHW_TRAY And FLASHW_TIMERNOFG)
+
+
     Private Function GetConnectionSettings(ByRef uName As String, ByRef uPassword As String, ByRef uServer As String, ByRef uDatabase As String) As String
         'gets the connection string values from the registry if they exist
         Dim connectionString As String
@@ -742,7 +757,7 @@ Public Class Form1
         If cn.State = ConnectionState.Open Then : cn.Close() : End If
         Using cn = New MySqlConnection("Server=genome-mysql.cse.ucsc.edu;Database=hg19;User ID=genome")
             cn.Open()
-            Using cmd As New MySqlCommand("SELECT chrom,chromStart,chromEnd,name,score,strand,thickStart,thickEnd,reserved,blockCount,blockSizes,chromStarts,expCount,expIds,expScores FROM wgEncodeRegTfbsClustered limit 1000", cn)
+            Using cmd As New MySqlCommand("SELECT chrom,chromStart,chromEnd,name,score,strand,thickStart,thickEnd,reserved,blockCount,blockSizes,chromStarts,expCount,expIds,expScores FROM wgEncodeRegTfbsClustered", cn)
                 cmd.CommandTimeout = 0
                 Using dr As MySqlDataReader = cmd.ExecuteReader()
                     While dr.Read()
@@ -841,6 +856,65 @@ Public Class Form1
         ProgressBar1.Value = 0
         MessageBox.Show("TFBS outputed to by name and score to " & outputDir)
     End Sub
+
+    Private Sub btnMC_Click(sender As System.Object, e As System.EventArgs) Handles btnMC.Click
+        Dim state As hqrndstate
+        hqrndrandomize(state)
+        Dim strTxt As String = txtMisc.Text
+        Dim strSplit As String()
+        If InStr(TextBox1.Text, vbCrLf) Then
+            strSplit = strTxt.Split(vbCrLf) 'Create array from the textbox
+        Else
+            strSplit = strTxt.Split(vbLf) 'Create array from the textbox
+        End If
+        Dim FullLen As Integer = strSplit.Length 'Total length of the list from txtMisc
+        Dim TextToLookup As String = InputBox("What text to lookup", "Enter text that will be wildcard matched to the entries pasted in textbox", "gene")   'What to check for over/underrepresentation
+        Dim NumObserved As Integer = InputBox("How many times this text observed in reality", "Observed number of occurances of this text", 50)             'How many times that was observed
+        Dim SampleSize As Integer = InputBox("What's the sample size", "Enter the size of sample selection", 3574)                                          'What was the sample size
+        Dim NumMC As Integer = InputBox("How many simulations to make", "Enter number of trials for random drawings", 100000)                                  'The number of MC stimulations
+        Dim arrayMCresults(NumMC) As Double     'Array to keep counts of occurances after each simulation
+        For i = 0 To NumMC                      'Run simulations
+            Dim rndArray As List(Of Integer) = New List(Of Integer)     'Store random positions, without replacement
+            For j = 0 To SampleSize - 1                                 'Get "sample size" random numbers
+                Dim rndNumber = hqrnduniformi(state, FullLen - 1) + 1   'Get random position
+                Dim uniqueHit As Boolean = False                        'Check if it's not been stored
+                Do Until uniqueHit                                      'Repeat until there will be unique random number
+                    If rndArray.Contains(rndNumber) = False Then        'If  it's not yet stored
+                        rndArray.Add(rndNumber)                         'Store it
+                        uniqueHit = True
+                    Else
+                        rndNumber = hqrnduniformi(state, FullLen - 1) + 1   'If not unique, get random position again
+                    End If
+                Loop
+            Next
+            Dim MCcounter As Integer = 0                                'Counter for each simulation
+            For j = 0 To SampleSize - 1                                 'Randomly sample from the whole array, repeat same number of times as sample size
+                If InStr(strSplit(rndArray(j)).ToLower, TextToLookup.ToLower) > 0 Then MCcounter += 1 'Count the number of coincidences
+            Next
+            arrayMCresults(i) = MCcounter                               'Store in array
+            Debug.Print(i)
+        Next
+        Dim pvalBoth, pvalLeft, pvalRight As Double 'p-values for one sided student t-test
+        studentttest1(arrayMCresults, arrayMCresults.Length, NumObserved, pvalBoth, pvalLeft, pvalRight)
+        Dim countMore As Integer, pvalCustom, pvalCustomC As Double 'Calculate p-value from monte-carlo simulations
+        For i = 0 To NumMC                                          'for each simulation
+            If arrayMCresults(i) > NumObserved Then countMore += 1 'Count the number of times there's more random hits than observed
+        Next
+        pvalCustom = countMore / arrayMCresults.Length : pvalCustomC = 1 - pvalCustom 'p-value and complementary p-value
+        If pvalCustomC < pvalCustom Then pvalCustom = pvalCustomC 'Get minimum p-value
+
+        Dim flash As New FLASHWINFO
+        flash.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(flash) '/// size of structure in bytes
+        flash.hwnd = MyBase.Handle '/// Handle to the window to be flashed
+        flash.dwFlags = FLASHW_ALL '/// to flash both the caption bar + the tray
+        flash.uCount = 50 '/// the number of flashes
+        flash.dwTimeout = 1000 '/// speed of flashes in MilliSeconds ( can be left out )
+        '/// flash the window you have specified the handle for...
+        FlashWindowEx(flash)
+
+        MessageBox.Show("pvalBoth : " & pvalBoth & vbCrLf & "pvalLeft : " & pvalLeft & vbCrLf & "pvalRight : " & pvalRight & vbCrLf & "Observed : " & NumObserved & vbCrLf & "Expected : " & arrayMCresults.Average & vbCrLf & "pvalCustom : " & pvalCustom)
+    End Sub
+
 End Class
 
 Public Class TranscriptionFactorRow

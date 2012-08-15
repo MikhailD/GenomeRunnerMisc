@@ -56,6 +56,7 @@ Partial Class Form1
         Me.btnClustering = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.btnMC = New System.Windows.Forms.Button()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtNumber = New System.Windows.Forms.TextBox()
@@ -64,7 +65,6 @@ Partial Class Form1
         Me.btnProcessVCF = New System.Windows.Forms.Button()
         Me.GroupBox9 = New System.Windows.Forms.GroupBox()
         Me.btnProcessExons = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox10 = New System.Windows.Forms.GroupBox()
         Me.btnTranscriptionExport = New System.Windows.Forms.Button()
         Me.btnHistoneModExtraction = New System.Windows.Forms.Button()
@@ -433,6 +433,7 @@ Partial Class Form1
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.btnMC)
         Me.GroupBox8.Controls.Add(Me.Label4)
         Me.GroupBox8.Controls.Add(Me.Label3)
         Me.GroupBox8.Controls.Add(Me.txtNumber)
@@ -445,10 +446,19 @@ Partial Class Form1
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Misc"
         '
+        'btnMC
+        '
+        Me.btnMC.Location = New System.Drawing.Point(133, 128)
+        Me.btnMC.Name = "btnMC"
+        Me.btnMC.Size = New System.Drawing.Size(62, 23)
+        Me.btnMC.TabIndex = 6
+        Me.btnMC.Text = "MC"
+        Me.btnMC.UseVisualStyleBackColor = True
+        '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(119, 59)
+        Me.Label4.Location = New System.Drawing.Point(125, 59)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(74, 13)
         Me.Label4.TabIndex = 4
@@ -457,7 +467,7 @@ Partial Class Form1
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(119, 16)
+        Me.Label3.Location = New System.Drawing.Point(132, 16)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(51, 13)
         Me.Label3.TabIndex = 3
@@ -465,17 +475,17 @@ Partial Class Form1
         '
         'txtNumber
         '
-        Me.txtNumber.Location = New System.Drawing.Point(119, 36)
+        Me.txtNumber.Location = New System.Drawing.Point(133, 36)
         Me.txtNumber.Name = "txtNumber"
-        Me.txtNumber.Size = New System.Drawing.Size(76, 20)
+        Me.txtNumber.Size = New System.Drawing.Size(62, 20)
         Me.txtNumber.TabIndex = 2
         Me.txtNumber.Text = "100"
         '
         'btnRandGene
         '
-        Me.btnRandGene.Location = New System.Drawing.Point(120, 75)
+        Me.btnRandGene.Location = New System.Drawing.Point(134, 75)
         Me.btnRandGene.Name = "btnRandGene"
-        Me.btnRandGene.Size = New System.Drawing.Size(75, 23)
+        Me.btnRandGene.Size = New System.Drawing.Size(61, 23)
         Me.btnRandGene.TabIndex = 1
         Me.btnRandGene.Text = "Generate!"
         Me.btnRandGene.UseVisualStyleBackColor = True
@@ -483,6 +493,7 @@ Partial Class Form1
         'txtMisc
         '
         Me.txtMisc.Location = New System.Drawing.Point(6, 34)
+        Me.txtMisc.MaxLength = 32767000
         Me.txtMisc.Multiline = True
         Me.txtMisc.Name = "txtMisc"
         Me.txtMisc.Size = New System.Drawing.Size(121, 253)
@@ -516,15 +527,6 @@ Partial Class Form1
         Me.btnProcessExons.TabIndex = 23
         Me.btnProcessExons.Text = "Process exons"
         Me.btnProcessExons.UseVisualStyleBackColor = True
-        '
-        'Button2
-        '
-        Me.Button2.Location = New System.Drawing.Point(0, 0)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 23)
-        Me.Button2.TabIndex = 22
-        Me.Button2.Text = "Button2"
-        Me.Button2.UseVisualStyleBackColor = True
         '
         'GroupBox10
         '
@@ -574,11 +576,10 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(701, 560)
+        Me.ClientSize = New System.Drawing.Size(703, 560)
         Me.Controls.Add(Me.lblProgress)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.GroupBox10)
-        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.GroupBox9)
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.GroupBox6)
@@ -649,11 +650,11 @@ Partial Class Form1
     Friend WithEvents btnProcessVCF As System.Windows.Forms.Button
     Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox
     Friend WithEvents btnProcessExons As System.Windows.Forms.Button
-    Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
     Friend WithEvents btnHistoneModExtraction As System.Windows.Forms.Button
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents btnTranscriptionExport As System.Windows.Forms.Button
     Friend WithEvents lblProgress As System.Windows.Forms.Label
+    Friend WithEvents btnMC As System.Windows.Forms.Button
 
 End Class
