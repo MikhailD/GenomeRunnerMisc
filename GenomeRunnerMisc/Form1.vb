@@ -139,7 +139,7 @@ Public Class Form1
 
     Function TrimStr(ByRef StringToTrim As String) As String
         'http://www.vbdotnetforums.com/vb-net-general-discussion/31506-how-remove-all-special-characters-string-visual-basic-net.html
-        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\:.-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/,".ToCharArray() 
+        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\:-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/,".ToCharArray() 
         Dim sb As New System.Text.StringBuilder
         For Each ch As Char In StringToTrim
             If Array.IndexOf(illegalChars, ch) = -1 Then
@@ -251,7 +251,11 @@ Public Class Form1
                 If rbtnOutputBoth.Checked = True Then strSplit(i) &= vbTab 'Add a tab, to separate converted names
                 If rbtnOutputConverted.Checked = True Then strSplit(i) = vbNullString 'Remove source ID, only converted ID will be kept
                 For j = 0 To strSubSplit.Count - 1      'Run through each member of pipe-separated string
-                    cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgXref WHERE refseq='" & strSubSplit(j) & "';", cn)
+                    If rbtnRefseq.Checked Then          'Depending what ID type selected run query
+                        cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgXref WHERE refseq='" & strSubSplit(j) & "';", cn)
+                    ElseIf rbtnUcsc.Checked Then
+                        cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgXref WHERE kgID='" & strSubSplit(j) & "';", cn)
+                    End If
                     dr = cmd.ExecuteReader
                     If dr.HasRows Then
                         dr.Read() : strSplit(i) &= dr(0) & strSeparator  'Add converted name and a pipe
@@ -870,7 +874,7 @@ Public Class Form1
         Dim FullLen As Integer = strSplit.Length 'Total length of the list from txtMisc
         Dim TextToLookup As String = InputBox("What text to lookup", "Enter text that will be wildcard matched to the entries pasted in textbox", "gene")   'What to check for over/underrepresentation
         Dim NumObserved As Integer = InputBox("How many times this text observed in reality", "Observed number of occurances of this text", 50)             'How many times that was observed
-        Dim SampleSize As Integer = InputBox("What's the sample size", "Enter the size of sample selection", 3574)                                          'What was the sample size
+        Dim SampleSize As Integer = InputBox("What's the sample size", "Enter the size of sample selection", 4136)                                          'What was the sample size
         Dim NumMC As Integer = InputBox("How many simulations to make", "Enter number of trials for random drawings", 100000)                                  'The number of MC stimulations
         Dim arrayMCresults(NumMC) As Double     'Array to keep counts of occurances after each simulation
         For i = 0 To NumMC                      'Run simulations
@@ -892,6 +896,19 @@ Public Class Form1
                 If InStr(strSplit(rndArray(j)).ToLower, TextToLookup.ToLower) > 0 Then MCcounter += 1 'Count the number of coincidences
             Next
             arrayMCresults(i) = MCcounter                               'Store in array
+            If i = 100 Then
+                Dim counterBalance As Integer = 0
+                For k = 0 To 100
+                    If arrayMCresults(k) > NumObserved Then
+                        counterBalance += 1
+                    Else
+                        counterBalance -= 1
+                    End If
+                Next
+                If System.Math.Abs(counterBalance) <= 30 Then
+                    NumMC = 100 : ReDim Preserve arrayMCresults(100) : Exit For
+                End If
+            End If
             Debug.Print(i)
         Next
         Dim pvalBoth, pvalLeft, pvalRight As Double 'p-values for one sided student t-test
@@ -914,6 +931,7 @@ Public Class Form1
 
         MessageBox.Show("pvalBoth : " & pvalBoth & vbCrLf & "pvalLeft : " & pvalLeft & vbCrLf & "pvalRight : " & pvalRight & vbCrLf & "Observed : " & NumObserved & vbCrLf & "Expected : " & arrayMCresults.Average & vbCrLf & "pvalCustom : " & pvalCustom)
     End Sub
+
 
 End Class
 

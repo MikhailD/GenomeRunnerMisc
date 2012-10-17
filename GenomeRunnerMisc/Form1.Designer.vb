@@ -37,6 +37,7 @@ Partial Class Form1
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.rbtnSourceID = New System.Windows.Forms.RadioButton()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.btnConvertTable2name = New System.Windows.Forms.Button()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.rbtnOutputConverted = New System.Windows.Forms.RadioButton()
@@ -70,9 +71,12 @@ Partial Class Form1
         Me.btnHistoneModExtraction = New System.Windows.Forms.Button()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.lblProgress = New System.Windows.Forms.Label()
+        Me.rbtnRefseq = New System.Windows.Forms.RadioButton()
+        Me.rbtnUcsc = New System.Windows.Forms.RadioButton()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        Me.GroupBox11.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -116,7 +120,7 @@ Partial Class Form1
         Me.btnConvert.Name = "btnConvert"
         Me.btnConvert.Size = New System.Drawing.Size(75, 23)
         Me.btnConvert.TabIndex = 4
-        Me.btnConvert.Text = "RefSeq2name"
+        Me.btnConvert.Text = "ID2name"
         Me.btnConvert.UseVisualStyleBackColor = True
         '
         'TextBox1
@@ -124,23 +128,23 @@ Partial Class Form1
         Me.TextBox1.AcceptsReturn = True
         Me.TextBox1.AcceptsTab = True
         Me.TextBox1.AllowDrop = True
-        Me.TextBox1.Location = New System.Drawing.Point(6, 37)
+        Me.TextBox1.Location = New System.Drawing.Point(6, 88)
         Me.TextBox1.MaxLength = 327670000
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.TextBox1.Size = New System.Drawing.Size(143, 279)
+        Me.TextBox1.Size = New System.Drawing.Size(143, 228)
         Me.TextBox1.TabIndex = 3
         Me.TextBox1.WordWrap = False
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(3, 21)
+        Me.Label1.Location = New System.Drawing.Point(6, 72)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(146, 13)
+        Me.Label1.Size = New System.Drawing.Size(107, 13)
         Me.Label1.TabIndex = 5
-        Me.Label1.Text = "RefSeq ID to name converter"
+        Me.Label1.Text = "ID to name converter"
         '
         'btnClear
         '
@@ -229,6 +233,7 @@ Partial Class Form1
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.GroupBox11)
         Me.GroupBox3.Controls.Add(Me.btnConvertTable2name)
         Me.GroupBox3.Controls.Add(Me.GroupBox7)
         Me.GroupBox3.Controls.Add(Me.TextBox1)
@@ -244,6 +249,17 @@ Partial Class Form1
         Me.GroupBox3.TabIndex = 16
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Conversion"
+        '
+        'GroupBox11
+        '
+        Me.GroupBox11.Controls.Add(Me.rbtnUcsc)
+        Me.GroupBox11.Controls.Add(Me.rbtnRefseq)
+        Me.GroupBox11.Location = New System.Drawing.Point(6, 16)
+        Me.GroupBox11.Name = "GroupBox11"
+        Me.GroupBox11.Size = New System.Drawing.Size(142, 55)
+        Me.GroupBox11.TabIndex = 17
+        Me.GroupBox11.TabStop = False
+        Me.GroupBox11.Text = "ID type"
         '
         'btnConvertTable2name
         '
@@ -572,6 +588,29 @@ Partial Class Form1
         Me.lblProgress.Size = New System.Drawing.Size(0, 13)
         Me.lblProgress.TabIndex = 25
         '
+        'rbtnRefseq
+        '
+        Me.rbtnRefseq.AutoSize = True
+        Me.rbtnRefseq.Checked = True
+        Me.rbtnRefseq.Location = New System.Drawing.Point(9, 18)
+        Me.rbtnRefseq.Name = "rbtnRefseq"
+        Me.rbtnRefseq.Size = New System.Drawing.Size(59, 17)
+        Me.rbtnRefseq.TabIndex = 0
+        Me.rbtnRefseq.TabStop = True
+        Me.rbtnRefseq.Text = "Refseq"
+        Me.rbtnRefseq.UseVisualStyleBackColor = True
+        '
+        'rbtnUcsc
+        '
+        Me.rbtnUcsc.AutoSize = True
+        Me.rbtnUcsc.Location = New System.Drawing.Point(9, 36)
+        Me.rbtnUcsc.Name = "rbtnUcsc"
+        Me.rbtnUcsc.Size = New System.Drawing.Size(54, 17)
+        Me.rbtnUcsc.TabIndex = 1
+        Me.rbtnUcsc.TabStop = True
+        Me.rbtnUcsc.Text = "UCSC"
+        Me.rbtnUcsc.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -593,6 +632,8 @@ Partial Class Form1
         Me.GroupBox2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        Me.GroupBox11.ResumeLayout(False)
+        Me.GroupBox11.PerformLayout()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
@@ -656,5 +697,8 @@ Partial Class Form1
     Friend WithEvents btnTranscriptionExport As System.Windows.Forms.Button
     Friend WithEvents lblProgress As System.Windows.Forms.Label
     Friend WithEvents btnMC As System.Windows.Forms.Button
+    Friend WithEvents GroupBox11 As System.Windows.Forms.GroupBox
+    Friend WithEvents rbtnUcsc As System.Windows.Forms.RadioButton
+    Friend WithEvents rbtnRefseq As System.Windows.Forms.RadioButton
 
 End Class
