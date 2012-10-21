@@ -38,6 +38,8 @@ Partial Class Form1
         Me.rbtnSourceID = New System.Windows.Forms.RadioButton()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
+        Me.rbtnUcsc = New System.Windows.Forms.RadioButton()
+        Me.rbtnRefseq = New System.Windows.Forms.RadioButton()
         Me.btnConvertTable2name = New System.Windows.Forms.Button()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.rbtnOutputConverted = New System.Windows.Forms.RadioButton()
@@ -71,8 +73,7 @@ Partial Class Form1
         Me.btnHistoneModExtraction = New System.Windows.Forms.Button()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.lblProgress = New System.Windows.Forms.Label()
-        Me.rbtnRefseq = New System.Windows.Forms.RadioButton()
-        Me.rbtnUcsc = New System.Windows.Forms.RadioButton()
+        Me.btnExonExtract = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -260,6 +261,29 @@ Partial Class Form1
         Me.GroupBox11.TabIndex = 17
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "ID type"
+        '
+        'rbtnUcsc
+        '
+        Me.rbtnUcsc.AutoSize = True
+        Me.rbtnUcsc.Location = New System.Drawing.Point(9, 36)
+        Me.rbtnUcsc.Name = "rbtnUcsc"
+        Me.rbtnUcsc.Size = New System.Drawing.Size(54, 17)
+        Me.rbtnUcsc.TabIndex = 1
+        Me.rbtnUcsc.TabStop = True
+        Me.rbtnUcsc.Text = "UCSC"
+        Me.rbtnUcsc.UseVisualStyleBackColor = True
+        '
+        'rbtnRefseq
+        '
+        Me.rbtnRefseq.AutoSize = True
+        Me.rbtnRefseq.Checked = True
+        Me.rbtnRefseq.Location = New System.Drawing.Point(9, 18)
+        Me.rbtnRefseq.Name = "rbtnRefseq"
+        Me.rbtnRefseq.Size = New System.Drawing.Size(59, 17)
+        Me.rbtnRefseq.TabIndex = 0
+        Me.rbtnRefseq.TabStop = True
+        Me.rbtnRefseq.Text = "Refseq"
+        Me.rbtnRefseq.UseVisualStyleBackColor = True
         '
         'btnConvertTable2name
         '
@@ -546,11 +570,12 @@ Partial Class Form1
         '
         'GroupBox10
         '
+        Me.GroupBox10.Controls.Add(Me.btnExonExtract)
         Me.GroupBox10.Controls.Add(Me.btnTranscriptionExport)
         Me.GroupBox10.Controls.Add(Me.btnHistoneModExtraction)
         Me.GroupBox10.Location = New System.Drawing.Point(490, 353)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(189, 84)
+        Me.GroupBox10.Size = New System.Drawing.Size(189, 129)
         Me.GroupBox10.TabIndex = 23
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "UCSC Data Extraction"
@@ -588,28 +613,14 @@ Partial Class Form1
         Me.lblProgress.Size = New System.Drawing.Size(0, 13)
         Me.lblProgress.TabIndex = 25
         '
-        'rbtnRefseq
+        'btnExonExtract
         '
-        Me.rbtnRefseq.AutoSize = True
-        Me.rbtnRefseq.Checked = True
-        Me.rbtnRefseq.Location = New System.Drawing.Point(9, 18)
-        Me.rbtnRefseq.Name = "rbtnRefseq"
-        Me.rbtnRefseq.Size = New System.Drawing.Size(59, 17)
-        Me.rbtnRefseq.TabIndex = 0
-        Me.rbtnRefseq.TabStop = True
-        Me.rbtnRefseq.Text = "Refseq"
-        Me.rbtnRefseq.UseVisualStyleBackColor = True
-        '
-        'rbtnUcsc
-        '
-        Me.rbtnUcsc.AutoSize = True
-        Me.rbtnUcsc.Location = New System.Drawing.Point(9, 36)
-        Me.rbtnUcsc.Name = "rbtnUcsc"
-        Me.rbtnUcsc.Size = New System.Drawing.Size(54, 17)
-        Me.rbtnUcsc.TabIndex = 1
-        Me.rbtnUcsc.TabStop = True
-        Me.rbtnUcsc.Text = "UCSC"
-        Me.rbtnUcsc.UseVisualStyleBackColor = True
+        Me.btnExonExtract.Location = New System.Drawing.Point(6, 77)
+        Me.btnExonExtract.Name = "btnExonExtract"
+        Me.btnExonExtract.Size = New System.Drawing.Size(177, 23)
+        Me.btnExonExtract.TabIndex = 2
+        Me.btnExonExtract.Text = "First/Last exon extraction"
+        Me.btnExonExtract.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -700,5 +711,6 @@ Partial Class Form1
     Friend WithEvents GroupBox11 As System.Windows.Forms.GroupBox
     Friend WithEvents rbtnUcsc As System.Windows.Forms.RadioButton
     Friend WithEvents rbtnRefseq As System.Windows.Forms.RadioButton
+    Friend WithEvents btnExonExtract As System.Windows.Forms.Button
 
 End Class

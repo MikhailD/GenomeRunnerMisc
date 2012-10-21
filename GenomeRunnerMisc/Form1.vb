@@ -252,9 +252,9 @@ Public Class Form1
                 If rbtnOutputConverted.Checked = True Then strSplit(i) = vbNullString 'Remove source ID, only converted ID will be kept
                 For j = 0 To strSubSplit.Count - 1      'Run through each member of pipe-separated string
                     If rbtnRefseq.Checked Then          'Depending what ID type selected run query
-                        cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgXref WHERE refseq='" & strSubSplit(j) & "';", cn)
+                        cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgxref WHERE refseq='" & strSubSplit(j) & "';", cn)
                     ElseIf rbtnUcsc.Checked Then
-                        cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgXref WHERE kgID='" & strSubSplit(j) & "';", cn)
+                        cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgxref WHERE kgID='" & strSubSplit(j) & "';", cn)
                     End If
                     dr = cmd.ExecuteReader
                     If dr.HasRows Then
@@ -933,6 +933,39 @@ Public Class Form1
     End Sub
 
 
+    Private Sub btnExonExtract_Click(sender As System.Object, e As System.EventArgs) Handles btnExonExtract.Click
+        OpenDatabase()
+        cmd = New MySqlCommand("SELECT exonStarts, exonEnds, chrom, name, score, strand FROM refGene", cn)
+        dr = cmd.ExecuteReader
+        Using swFirst As New StreamWriter("F:\exonFirst.bed")
+            Using swLast As New StreamWriter("F:\exonLast.bed")
+                Using swFirstLast As New StreamWriter("F:\exonFirstLast.bed")
+                    Using swAll As New StreamWriter("F:\exonAll.bed")
+                        While dr.Read
+                            Dim exStarts As String() = New String() {}
+                            Dim exEnds As String() = New String() {}
+                            Dim length As Integer = 0
+                            exStarts = dr(0).ToString.Split(",")
+                            exEnds = dr(1).ToString.Split(",")
+                            length = exStarts.Length - 2 'Last symbol is "", and dimensions start from 0
+                            swFirst.WriteLine(dr(2) & vbTab & exStarts(0) & vbTab & exEnds(0) & vbTab & dr(3) & vbTab & dr(4) & vbTab & dr(5))
+                            swLast.WriteLine(dr(2) & vbTab & exStarts(length) & vbTab & exEnds(length) & vbTab & dr(3) & vbTab & dr(4) & vbTab & dr(5))
+                            swFirstLast.WriteLine(dr(2) & vbTab & exStarts(0) & vbTab & exEnds(0) & vbTab & dr(3) & vbTab & dr(4) & vbTab & dr(5) & vbCrLf &
+                                            dr(2) & vbTab & exStarts(length) & vbTab & exEnds(length) & vbTab & dr(3) & vbTab & dr(4) & vbTab & dr(5))
+                            Dim allExons As String = vbNullString
+                            For i = 0 To length
+                                allExons += dr(2) & vbTab & exStarts(i) & vbTab & exEnds(i) & vbTab & dr(3) & vbTab & dr(4) & vbTab & dr(5) & vbCrLf
+                            Next
+                            swAll.Write(allExons)
+                            Debug.Print(dr(3))
+                        End While
+                    End Using
+                End Using
+            End Using
+        End Using
+
+        dr.Close() : cmd.Dispose()
+    End Sub
 End Class
 
 Public Class TranscriptionFactorRow
