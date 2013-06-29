@@ -139,7 +139,7 @@ Public Class Form1
 
     Function TrimStr(ByRef StringToTrim As String) As String
         'http://www.vbdotnetforums.com/vb-net-general-discussion/31506-how-remove-all-special-characters-string-visual-basic-net.html
-        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\:.-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/,".ToCharArray() 
+        Dim illegalChars As Char() = "!@#$%^&*(){}[]""+'<>?/\:-" & vbLf.ToCharArray() '"!@#$%^&*(){}[]""_+<>?/,".ToCharArray() 
         Dim sb As New System.Text.StringBuilder
         For Each ch As Char In StringToTrim
             If Array.IndexOf(illegalChars, ch) = -1 Then
@@ -251,7 +251,11 @@ Public Class Form1
                 If rbtnOutputBoth.Checked = True Then strSplit(i) &= vbTab 'Add a tab, to separate converted names
                 If rbtnOutputConverted.Checked = True Then strSplit(i) = vbNullString 'Remove source ID, only converted ID will be kept
                 For j = 0 To strSubSplit.Count - 1      'Run through each member of pipe-separated string
-                    cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgXref WHERE refseq='" & strSubSplit(j) & "';", cn)
+                    If rbtnRefseq.Checked Then          'Depending what ID type selected run query
+                        cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgXref WHERE refseq='" & strSubSplit(j) & "';", cn)
+                    ElseIf rbtnUcsc.Checked Then
+                        cmd = New MySqlCommand("SELECT geneSymbol,description FROM kgXref WHERE kgID='" & strSubSplit(j) & "';", cn)
+                    End If
                     dr = cmd.ExecuteReader
                     If dr.HasRows Then
                         dr.Read() : strSplit(i) &= dr(0) & strSeparator  'Add converted name and a pipe
@@ -433,12 +437,30 @@ Public Class Form1
 
     End Sub
 
-    Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
-        'Debug.Print(DateTime.Now.ToString("dd-MM-yyyy_hh.mm.sstt"))
-        If File.Exists("F:\1111.TXT.tab") Then
-            Debug.Print("111")
-        End If
-
+    Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles btngwasCatalog.Click
+        cmd = New MySqlCommand("select distinct (trait) from gwasCatalog", cn)
+        dr = cmd.ExecuteReader
+        Dim traits As List(Of String) = New List(Of String)
+        While dr.Read
+            traits.Add(dr(0))
+        End While
+        dr.Close() : cmd.Dispose()
+        For Each trait In traits
+            Debug.Print("Processing " & trait)
+            cmd = New MySqlCommand("select distinct chrom, chromStart, chromEnd  from gwasCatalog where trait =""" & trait & """ AND chrom in ('chr1','chr2','chr3','chr4','chr5','chr6','chr7','chrX','chr8','chr9','chr10','chr11','chr12','chr13','chr14','chr15','chr16','chr17','chr18','chr20','chrY','chr19','chr22','chr21','chrM');", cn)
+            dr = cmd.ExecuteReader
+            Using writer As StreamWriter = New StreamWriter("F:\22\" & TrimStr(trait).Replace(" ", "_") & ".bed")
+                Dim chrom As String, chromStart, chromEnd As Integer
+                While dr.Read
+                    chrom = dr(0) : chromStart = dr(1) : chromEnd = dr(2)
+                    If chromStart = chromEnd Then chromEnd += 1
+                    If chromEnd - chromStart <> 1 Then Debug.Print("WARNING! " & trait & " has an outlier SNP " & chrom & ":" & chromStart & "-" & chromEnd)
+                    writer.WriteLine(chrom & vbTab & chromStart & vbTab & chromEnd)
+                End While
+            End Using
+            dr.Close() : cmd.Dispose()
+        Next
+        Debug.Print("Done")
     End Sub
 
     Private Sub btnDiseaseOntology_Click(sender As System.Object, e As System.EventArgs) Handles btnDiseaseOntology.Click
@@ -505,7 +527,8 @@ Public Class Form1
                 If rbtnOutputBoth.Checked = True Then strSplit(i) &= vbTab 'Add a tab, to separate converted names
                 If rbtnOutputConverted.Checked = True Then strSplit(i) = vbNullString 'Remove source ID, only converted ID will be kept
 
-                cmd = New MySqlCommand("SELECT FeatureName FROM genomerunner WHERE FeatureTable='" & tableName & "';", cn)
+                'cmd = New MySqlCommand("SELECT FeatureName FROM genomerunner WHERE FeatureTable='" & tableName & "';", cn)
+                cmd = New MySqlCommand("SELECT longLabel FROM trackDb WHERE tableName='" & tableName & "';", cn)
                 dr = cmd.ExecuteReader
                 If dr.HasRows Then
                     If exons Then strSplit(i) &= "Exons: "
@@ -519,14 +542,14 @@ Public Class Form1
 
             End If
         Next
-        TextBox1.Text = String.Join(vbCrLf, strSplit)
+        TextBox1.Text = String.Join("", strSplit)
 
     End Sub
 
     Private Sub btnRandGene_Click(sender As System.Object, e As System.EventArgs) Handles btnRandGene.Click
         OpenDatabase()
         Dim lstGenes As List(Of String) = New List(Of String), lstRandGenes As List(Of String) = New List(Of String), rndGeneID As UInteger, state As hqrndstate
-        cmd = New MySqlCommand("SELECT gene_symbol FROM gene WHERE tax_id=9606;", cn)
+        cmd = New MySqlCommand("SELECT distinct name2 FROM refGene;", cn)
         dr = cmd.ExecuteReader
         While dr.Read
             lstGenes.Add(dr(0))
@@ -870,7 +893,7 @@ Public Class Form1
         Dim FullLen As Integer = strSplit.Length 'Total length of the list from txtMisc
         Dim TextToLookup As String = InputBox("What text to lookup", "Enter text that will be wildcard matched to the entries pasted in textbox", "gene")   'What to check for over/underrepresentation
         Dim NumObserved As Integer = InputBox("How many times this text observed in reality", "Observed number of occurances of this text", 50)             'How many times that was observed
-        Dim SampleSize As Integer = InputBox("What's the sample size", "Enter the size of sample selection", 3574)                                          'What was the sample size
+        Dim SampleSize As Integer = InputBox("What's the sample size", "Enter the size of sample selection", 4136)                                          'What was the sample size
         Dim NumMC As Integer = InputBox("How many simulations to make", "Enter number of trials for random drawings", 100000)                                  'The number of MC stimulations
         Dim arrayMCresults(NumMC) As Double     'Array to keep counts of occurances after each simulation
         For i = 0 To NumMC                      'Run simulations
@@ -892,6 +915,19 @@ Public Class Form1
                 If InStr(strSplit(rndArray(j)).ToLower, TextToLookup.ToLower) > 0 Then MCcounter += 1 'Count the number of coincidences
             Next
             arrayMCresults(i) = MCcounter                               'Store in array
+            If i = 100 Then
+                Dim counterBalance As Integer = 0
+                For k = 0 To 100
+                    If arrayMCresults(k) > NumObserved Then
+                        counterBalance += 1
+                    Else
+                        counterBalance -= 1
+                    End If
+                Next
+                If System.Math.Abs(counterBalance) <= 30 Then
+                    NumMC = 100 : ReDim Preserve arrayMCresults(100) : Exit For
+                End If
+            End If
             Debug.Print(i)
         Next
         Dim pvalBoth, pvalLeft, pvalRight As Double 'p-values for one sided student t-test
@@ -915,6 +951,75 @@ Public Class Form1
         MessageBox.Show("pvalBoth : " & pvalBoth & vbCrLf & "pvalLeft : " & pvalLeft & vbCrLf & "pvalRight : " & pvalRight & vbCrLf & "Observed : " & NumObserved & vbCrLf & "Expected : " & arrayMCresults.Average & vbCrLf & "pvalCustom : " & pvalCustom)
     End Sub
 
+
+    Private Sub btnExonExtract_Click(sender As System.Object, e As System.EventArgs) Handles btnExonExtract.Click
+        OpenDatabase()
+        cmd = New MySqlCommand("SELECT exonStarts, exonEnds, chrom, name, score, strand FROM refGene", cn)
+        dr = cmd.ExecuteReader
+        Using swFirst As New StreamWriter("F:\exonFirst.bed")
+            Using swLast As New StreamWriter("F:\exonLast.bed")
+                Using swFirstLast As New StreamWriter("F:\exonFirstLast.bed")
+                    Using swAll As New StreamWriter("F:\exonAll.bed")
+                        While dr.Read
+                            Dim exStarts As String() = New String() {}
+                            Dim exEnds As String() = New String() {}
+                            Dim length As Integer = 0
+                            exStarts = dr(0).ToString.Split(",")
+                            exEnds = dr(1).ToString.Split(",")
+                            length = exStarts.Length - 2 'Last symbol is "", and dimensions start from 0
+                            swFirst.WriteLine(dr(2) & vbTab & exStarts(0) & vbTab & exEnds(0) & vbTab & dr(3) & vbTab & dr(4) & vbTab & dr(5))
+                            swLast.WriteLine(dr(2) & vbTab & exStarts(length) & vbTab & exEnds(length) & vbTab & dr(3) & vbTab & dr(4) & vbTab & dr(5))
+                            swFirstLast.WriteLine(dr(2) & vbTab & exStarts(0) & vbTab & exEnds(0) & vbTab & dr(3) & vbTab & dr(4) & vbTab & dr(5) & vbCrLf &
+                                            dr(2) & vbTab & exStarts(length) & vbTab & exEnds(length) & vbTab & dr(3) & vbTab & dr(4) & vbTab & dr(5))
+                            Dim allExons As String = vbNullString
+                            For i = 0 To length
+                                allExons += dr(2) & vbTab & exStarts(i) & vbTab & exEnds(i) & vbTab & dr(3) & vbTab & dr(4) & vbTab & dr(5) & vbCrLf
+                            Next
+                            swAll.Write(allExons)
+                            Debug.Print(dr(3))
+                        End While
+                    End Using
+                End Using
+            End Using
+        End Using
+
+        dr.Close() : cmd.Dispose()
+    End Sub
+
+
+    Private Sub btnSNPCoords_Click(sender As System.Object, e As System.EventArgs) Handles btnSNPCoords.Click
+        'Convert SNP Chr-Start coordinates into rs*** names
+        Dim DidWork As Integer
+        OpenFD.Title = "Select a tab-delimited file with SNP names"
+        OpenFD.FileName = ""
+        OpenFD.Filter = "All files|*.*|Text Files|*.txt|BED Files|*.bed"
+        DidWork = OpenFD.ShowDialog()
+        If DidWork = DialogResult.Cancel Then
+            MsgBox("Filename required!") : Exit Sub
+        End If
+
+        Dim snplist As List(Of String) = New List(Of String)
+        Using reader As StreamReader = New StreamReader(OpenFD.FileName)
+            While Not reader.EndOfStream                                                'Input SNP coordinates, in format Chr-Tab-Start
+                snplist.Add(reader.ReadLine)
+            End While
+        End Using
+
+        OpenDatabase()
+        cmd = New MySqlCommand("select distinct chrom, chromStart, chromEnd, name from snp137 where name in (""" & String.Join(""",""", snplist) & """);", cn)
+        dr = cmd.ExecuteReader
+        Using writer As StreamWriter = New StreamWriter("F:\snp_out.txt")
+            Dim chrom As String, chromStart, chromEnd As Integer, name As String
+            While dr.Read
+                chrom = dr(0) : chromStart = dr(1) : chromEnd = dr(2) : name = dr(3)
+                If chromStart = chromEnd Then chromEnd += 1
+                If chromEnd - chromStart <> 1 Then Debug.Print("WARNING! An outlier SNP " & chrom & ":" & chromStart & "-" & chromEnd)
+                writer.WriteLine(chrom & vbTab & chromStart & vbTab & chromEnd & vbTab & name)
+            End While
+        End Using
+        dr.Close() : cmd.Dispose()
+        Debug.Print("Done")
+    End Sub
 End Class
 
 Public Class TranscriptionFactorRow

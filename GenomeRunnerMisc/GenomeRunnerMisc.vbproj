@@ -86,8 +86,9 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="alglibnet2">
-      <HintPath>\\atlas\wrenlab\Code\alglib-3.2.0.vbnet\vbnet\alglibnet2.dll</HintPath>
+    <Reference Include="alglibnet2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\alglib-3.4.0.vbnet\vbnet\alglibnet2.dll</HintPath>
     </Reference>
     <Reference Include="Interop.MLApp">
       <HintPath>.\Interop.MLApp.dll</HintPath>

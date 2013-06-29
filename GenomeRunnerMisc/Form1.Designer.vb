@@ -37,12 +37,15 @@ Partial Class Form1
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.rbtnSourceID = New System.Windows.Forms.RadioButton()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
+        Me.rbtnUcsc = New System.Windows.Forms.RadioButton()
+        Me.rbtnRefseq = New System.Windows.Forms.RadioButton()
         Me.btnConvertTable2name = New System.Windows.Forms.Button()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.rbtnOutputConverted = New System.Windows.Forms.RadioButton()
         Me.rbtnOutputBoth = New System.Windows.Forms.RadioButton()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btngwasCatalog = New System.Windows.Forms.Button()
         Me.btnDiseaseOntology = New System.Windows.Forms.Button()
         Me.btnGOquery = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
@@ -64,15 +67,19 @@ Partial Class Form1
         Me.txtMisc = New System.Windows.Forms.TextBox()
         Me.btnProcessVCF = New System.Windows.Forms.Button()
         Me.GroupBox9 = New System.Windows.Forms.GroupBox()
+        Me.btnSNPCoords = New System.Windows.Forms.Button()
         Me.btnProcessExons = New System.Windows.Forms.Button()
         Me.GroupBox10 = New System.Windows.Forms.GroupBox()
+        Me.btnExonExtract = New System.Windows.Forms.Button()
         Me.btnTranscriptionExport = New System.Windows.Forms.Button()
         Me.btnHistoneModExtraction = New System.Windows.Forms.Button()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.lblProgress = New System.Windows.Forms.Label()
+        Me.OpenFD = New System.Windows.Forms.OpenFileDialog()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        Me.GroupBox11.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -116,7 +123,7 @@ Partial Class Form1
         Me.btnConvert.Name = "btnConvert"
         Me.btnConvert.Size = New System.Drawing.Size(75, 23)
         Me.btnConvert.TabIndex = 4
-        Me.btnConvert.Text = "RefSeq2name"
+        Me.btnConvert.Text = "ID2name"
         Me.btnConvert.UseVisualStyleBackColor = True
         '
         'TextBox1
@@ -124,23 +131,23 @@ Partial Class Form1
         Me.TextBox1.AcceptsReturn = True
         Me.TextBox1.AcceptsTab = True
         Me.TextBox1.AllowDrop = True
-        Me.TextBox1.Location = New System.Drawing.Point(6, 37)
+        Me.TextBox1.Location = New System.Drawing.Point(6, 88)
         Me.TextBox1.MaxLength = 327670000
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.TextBox1.Size = New System.Drawing.Size(143, 279)
+        Me.TextBox1.Size = New System.Drawing.Size(143, 228)
         Me.TextBox1.TabIndex = 3
         Me.TextBox1.WordWrap = False
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(3, 21)
+        Me.Label1.Location = New System.Drawing.Point(6, 72)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(146, 13)
+        Me.Label1.Size = New System.Drawing.Size(107, 13)
         Me.Label1.TabIndex = 5
-        Me.Label1.Text = "RefSeq ID to name converter"
+        Me.Label1.Text = "ID to name converter"
         '
         'btnClear
         '
@@ -229,6 +236,7 @@ Partial Class Form1
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.GroupBox11)
         Me.GroupBox3.Controls.Add(Me.btnConvertTable2name)
         Me.GroupBox3.Controls.Add(Me.GroupBox7)
         Me.GroupBox3.Controls.Add(Me.TextBox1)
@@ -244,6 +252,40 @@ Partial Class Form1
         Me.GroupBox3.TabIndex = 16
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Conversion"
+        '
+        'GroupBox11
+        '
+        Me.GroupBox11.Controls.Add(Me.rbtnUcsc)
+        Me.GroupBox11.Controls.Add(Me.rbtnRefseq)
+        Me.GroupBox11.Location = New System.Drawing.Point(6, 16)
+        Me.GroupBox11.Name = "GroupBox11"
+        Me.GroupBox11.Size = New System.Drawing.Size(142, 55)
+        Me.GroupBox11.TabIndex = 17
+        Me.GroupBox11.TabStop = False
+        Me.GroupBox11.Text = "ID type"
+        '
+        'rbtnUcsc
+        '
+        Me.rbtnUcsc.AutoSize = True
+        Me.rbtnUcsc.Location = New System.Drawing.Point(9, 36)
+        Me.rbtnUcsc.Name = "rbtnUcsc"
+        Me.rbtnUcsc.Size = New System.Drawing.Size(54, 17)
+        Me.rbtnUcsc.TabIndex = 1
+        Me.rbtnUcsc.TabStop = True
+        Me.rbtnUcsc.Text = "UCSC"
+        Me.rbtnUcsc.UseVisualStyleBackColor = True
+        '
+        'rbtnRefseq
+        '
+        Me.rbtnRefseq.AutoSize = True
+        Me.rbtnRefseq.Checked = True
+        Me.rbtnRefseq.Location = New System.Drawing.Point(9, 18)
+        Me.rbtnRefseq.Name = "rbtnRefseq"
+        Me.rbtnRefseq.Size = New System.Drawing.Size(59, 17)
+        Me.rbtnRefseq.TabIndex = 0
+        Me.rbtnRefseq.TabStop = True
+        Me.rbtnRefseq.Text = "Refseq"
+        Me.rbtnRefseq.UseVisualStyleBackColor = True
         '
         'btnConvertTable2name
         '
@@ -291,7 +333,7 @@ Partial Class Form1
         '
         'GroupBox4
         '
-        Me.GroupBox4.Controls.Add(Me.Button1)
+        Me.GroupBox4.Controls.Add(Me.btngwasCatalog)
         Me.GroupBox4.Controls.Add(Me.btnDiseaseOntology)
         Me.GroupBox4.Controls.Add(Me.btnGOquery)
         Me.GroupBox4.Controls.Add(Me.GroupBox5)
@@ -307,14 +349,14 @@ Partial Class Form1
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Misc"
         '
-        'Button1
+        'btngwasCatalog
         '
-        Me.Button1.Location = New System.Drawing.Point(253, 179)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 20
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btngwasCatalog.Location = New System.Drawing.Point(207, 179)
+        Me.btngwasCatalog.Name = "btngwasCatalog"
+        Me.btngwasCatalog.Size = New System.Drawing.Size(121, 23)
+        Me.btngwasCatalog.TabIndex = 20
+        Me.btngwasCatalog.Text = "gwasCatalog"
+        Me.btngwasCatalog.UseVisualStyleBackColor = True
         '
         'btnDiseaseOntology
         '
@@ -510,6 +552,7 @@ Partial Class Form1
         '
         'GroupBox9
         '
+        Me.GroupBox9.Controls.Add(Me.btnSNPCoords)
         Me.GroupBox9.Controls.Add(Me.btnProcessExons)
         Me.GroupBox9.Controls.Add(Me.btnProcessVCF)
         Me.GroupBox9.Location = New System.Drawing.Point(352, 353)
@@ -518,6 +561,15 @@ Partial Class Form1
         Me.GroupBox9.TabIndex = 21
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "GroupBox9"
+        '
+        'btnSNPCoords
+        '
+        Me.btnSNPCoords.Location = New System.Drawing.Point(6, 73)
+        Me.btnSNPCoords.Name = "btnSNPCoords"
+        Me.btnSNPCoords.Size = New System.Drawing.Size(121, 23)
+        Me.btnSNPCoords.TabIndex = 26
+        Me.btnSNPCoords.Text = "Get SNP coords"
+        Me.btnSNPCoords.UseVisualStyleBackColor = True
         '
         'btnProcessExons
         '
@@ -530,14 +582,24 @@ Partial Class Form1
         '
         'GroupBox10
         '
+        Me.GroupBox10.Controls.Add(Me.btnExonExtract)
         Me.GroupBox10.Controls.Add(Me.btnTranscriptionExport)
         Me.GroupBox10.Controls.Add(Me.btnHistoneModExtraction)
         Me.GroupBox10.Location = New System.Drawing.Point(490, 353)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(189, 84)
+        Me.GroupBox10.Size = New System.Drawing.Size(189, 129)
         Me.GroupBox10.TabIndex = 23
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "UCSC Data Extraction"
+        '
+        'btnExonExtract
+        '
+        Me.btnExonExtract.Location = New System.Drawing.Point(6, 77)
+        Me.btnExonExtract.Name = "btnExonExtract"
+        Me.btnExonExtract.Size = New System.Drawing.Size(177, 23)
+        Me.btnExonExtract.TabIndex = 2
+        Me.btnExonExtract.Text = "First/Last exon extraction"
+        Me.btnExonExtract.UseVisualStyleBackColor = True
         '
         'btnTranscriptionExport
         '
@@ -572,6 +634,10 @@ Partial Class Form1
         Me.lblProgress.Size = New System.Drawing.Size(0, 13)
         Me.lblProgress.TabIndex = 25
         '
+        'OpenFD
+        '
+        Me.OpenFD.FileName = "OpenFileDialog1"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -593,6 +659,8 @@ Partial Class Form1
         Me.GroupBox2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        Me.GroupBox11.ResumeLayout(False)
+        Me.GroupBox11.PerformLayout()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
@@ -639,7 +707,7 @@ Partial Class Form1
     Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
     Friend WithEvents btnVistaEnhancers As System.Windows.Forms.Button
     Friend WithEvents btnGenomeGovProcessing As System.Windows.Forms.Button
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btngwasCatalog As System.Windows.Forms.Button
     Friend WithEvents btnDiseaseOntology As System.Windows.Forms.Button
     Friend WithEvents btnConvertTable2name As System.Windows.Forms.Button
     Friend WithEvents Label4 As System.Windows.Forms.Label
@@ -656,5 +724,11 @@ Partial Class Form1
     Friend WithEvents btnTranscriptionExport As System.Windows.Forms.Button
     Friend WithEvents lblProgress As System.Windows.Forms.Label
     Friend WithEvents btnMC As System.Windows.Forms.Button
+    Friend WithEvents GroupBox11 As System.Windows.Forms.GroupBox
+    Friend WithEvents rbtnUcsc As System.Windows.Forms.RadioButton
+    Friend WithEvents rbtnRefseq As System.Windows.Forms.RadioButton
+    Friend WithEvents btnExonExtract As System.Windows.Forms.Button
+    Friend WithEvents btnSNPCoords As System.Windows.Forms.Button
+    Friend WithEvents OpenFD As System.Windows.Forms.OpenFileDialog
 
 End Class
