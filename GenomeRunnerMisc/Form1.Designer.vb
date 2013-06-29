@@ -75,7 +75,7 @@ Partial Class Form1
         Me.btnHistoneModExtraction = New System.Windows.Forms.Button()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.lblProgress = New System.Windows.Forms.Label()
-        Me.OpenFD = New System.Windows.Forms.OpenFileDialog()
+        Me.btnExonExtract = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -633,10 +633,11 @@ Partial Class Form1
         Me.lblProgress.Name = "lblProgress"
         Me.lblProgress.Size = New System.Drawing.Size(0, 13)
         Me.lblProgress.TabIndex = 25
-        '
-        'OpenFD
-        '
-        Me.OpenFD.FileName = "OpenFileDialog1"
+        Me.btnExonExtract.Location = New System.Drawing.Point(6, 77)
+        Me.btnExonExtract.Name = "btnExonExtract"
+        Me.btnExonExtract.Size = New System.Drawing.Size(177, 23)
+        Me.btnExonExtract.TabIndex = 2
+        Me.btnExonExtract.Text = "First/Last exon extraction"
         '
         'Form1
         '

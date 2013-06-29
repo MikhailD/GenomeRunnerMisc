@@ -368,7 +368,7 @@ Public Class Form1
     Private Sub btnGOquery_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGOquery.Click
         OpenDatabase()
         Dim go_id, go_name, go_name1 As List(Of String), gene_id_count As List(Of Integer) = New List(Of Integer)
-        go_id = New List(Of String): go_name= New List(Of String): go_name1 = New List(Of String)
+        go_id = New List(Of String) : go_name = New List(Of String) : go_name1 = New List(Of String)
         cmd = New MySqlCommand("SELECT go_id,go_name FROM go where go_name like '%immun%';", cn)
         dr = cmd.ExecuteReader
         While dr.Read
@@ -629,7 +629,7 @@ Public Class Form1
 
         Dim outputDir As String = fd.SelectedPath
         cn = New MySqlConnection("Server=genome-mysql.cse.ucsc.edu;Database=hg19;User ID=genome;Password=")
-       
+
         Dim tableNames = GetHistoneModTableNames()
         ProgressBar1.Maximum = tableNames.Count
         For Each table In tableNames
@@ -735,7 +735,7 @@ Public Class Form1
         Return columnNames
     End Function
 
-   
+
 
 
     'downloads a text file from the UCSC server that contains names of the modification table.  Formats this text file and only outputs those table names that 
@@ -985,7 +985,6 @@ Public Class Form1
 
         dr.Close() : cmd.Dispose()
     End Sub
-
 
     Private Sub btnSNPCoords_Click(sender As System.Object, e As System.EventArgs) Handles btnSNPCoords.Click
         'Convert SNP Chr-Start coordinates into rs*** names
